@@ -1,0 +1,41 @@
+﻿@page "/list"
+
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using DocumentApp.Domain
+
+<PageTitle>PublicationList</PageTitle>
+
+<h3>Publication List</h3>
+
+@if (fulfil && _publications.Count() == 0)
+{
+    <p>Пользователи отсутствуют.</p>
+}
+else if (!fulfil && _publications == null)
+{
+    <p>Идет загрузка...</p>
+}
+
+@if (_publications != null)
+{
+    <ul>
+        @foreach (var publication in _publications)
+        {
+            <li>@publication.PublishingYear</li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<Publication> _publications = null!;
+    private bool fulfil = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _publications = await Http.GetFromJsonAsync<IEnumerable<Publication>>("https://localhost:7204/api/Publications");
+        fulfil = true;
+    }
+}
