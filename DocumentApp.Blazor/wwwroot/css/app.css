@@ -99,3 +99,16 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+.butt {
+    background-color: #bd63d3;
+    border: none;
+    font-size: 20px;
+    z-index: 1;
+    padding: 2px 30px;
+    cursor: pointer;
+}
+
+.modal__block input{
+    margin-bottom: 20px;
+}

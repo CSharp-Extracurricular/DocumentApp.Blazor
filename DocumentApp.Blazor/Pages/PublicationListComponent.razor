@@ -1,5 +1,6 @@
 ﻿@page "/list"
 
+
 @using System.Net.Http
 @inject HttpClient Http
 @using System.Net.Http.Json
@@ -29,6 +30,39 @@ else if (!fulfil && _publications == null)
     </ul>
 }
 
+<form>
+<h3>Авторы</h3>
+<div class="title__autor__publication">
+    <div class="fio_autor">
+        <div class="text__fio__autor__modalWindow">Фамилия:</div>
+            <input name="surname" type="text" @bind="CurrentValue" />
+    </div>
+    <div class="fio_autor">
+        <div class="text__fio__autor__modalWindow">Имя:</div>
+        <input name="firstName" type="text" />
+    </div>
+    <div class="fio_autor">
+        <div class="text__fio__autor__modalWindow">Отчество:</div>
+        <input name="patronymic" type="text" />
+    </div>
+</div>
+
+<h3>Название</h3>
+<div class="titile__name__publication">
+    <div class="text__Namepublication__modalWindow">
+        Название:
+    </div>
+    <input name="Namepublication" type="text" />
+</div>
+
+
+<div class="modal__block">
+<h3>Дата публикации</h3>
+<input type="date" name="DatePublication" id="DatePublication" />
+</div>
+    <button class="butt" @onclick="GetValuet">Добавить публикацию</button>
+<p>Current count: @NewValue</p>
+</form>
 @code {
     private IEnumerable<Publication> _publications = null!;
     private bool fulfil = false;
@@ -37,5 +71,20 @@ else if (!fulfil && _publications == null)
     {
         _publications = await Http.GetFromJsonAsync<IEnumerable<Publication>>("https://localhost:7204/api/Publications");
         fulfil = true;
+    }
+}
+
+
+@code {
+private string CurrentValue { get; set; }
+
+    private string NewValue { get; set; }
+
+    private void GetValuet()
+
+    {
+
+        NewValue = CurrentValue;
+
     }
 }
