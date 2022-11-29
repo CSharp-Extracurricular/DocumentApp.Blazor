@@ -1,6 +1,5 @@
 ﻿@page "/list"
 
-
 @using System.Net.Http
 @inject HttpClient Http
 @using System.Net.Http.Json
@@ -63,28 +62,24 @@ else if (!fulfil && _publications == null)
     <button class="butt" @onclick="GetValuet">Добавить публикацию</button>
 <p>Current count: @NewValue</p>
 </form>
+
 @code {
     private IEnumerable<Publication> _publications = null!;
     private bool fulfil = false;
 
     protected override async Task OnInitializedAsync()
     {
-        _publications = await Http.GetFromJsonAsync<IEnumerable<Publication>>("https://localhost:7204/api/Publications");
+        _publications = await Http.GetFromJsonAsync<IEnumerable<Publication>>("https://localhost:7204/api/Publications") ?? null!;
         fulfil = true;
     }
 }
 
-
 @code {
-private string CurrentValue { get; set; }
+    private string CurrentValue { get; set; }
 
     private string NewValue { get; set; }
 
-    private void GetValuet()
-
-    {
-
+    private void GetValuet() {
         NewValue = CurrentValue;
-
     }
 }
