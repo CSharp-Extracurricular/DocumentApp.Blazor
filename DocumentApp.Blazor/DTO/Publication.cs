@@ -1,6 +1,5 @@
 ﻿namespace DocumentApp.Blazor.DTO
 {
-
     public enum PublicationType
     {
         Monography,

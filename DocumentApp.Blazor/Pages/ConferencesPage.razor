@@ -1,5 +1,4 @@
-﻿@page "/list"
-
+﻿@page "/conference"
 
 @using System.Net.Http
 @inject HttpClient Http
@@ -8,10 +7,9 @@
 @using DocumentApp.Blazor.DTO
 
 <select>
-
     @foreach (var item in ArrConf)
-        {
-        <option> @item  </option>
+    {
+        <option>@item</option>
     }
 </select>
 
