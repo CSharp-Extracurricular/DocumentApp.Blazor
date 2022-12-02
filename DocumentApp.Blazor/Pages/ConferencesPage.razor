@@ -5,9 +5,16 @@
 @inject HttpClient Http
 @using System.Net.Http.Json
 @using System.Threading.Tasks
-@using DocumentApp.Domain
+@using DocumentApp.Blazor.DTO
 
 <select>
-    <option>Пункт 1</option>
-    <option>Пункт 2</option>
+
+    @foreach (var item in ArrConf)
+        {
+        <option> @item  </option>
+    }
 </select>
+
+@code {
+    string[] ArrConf = new string[5] { "Monography", "Textbook", "Article", "Report", "Thesis" };
+}
