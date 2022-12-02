@@ -69,7 +69,7 @@ else if (!fulfil && _publications == null)
 
     protected override async Task OnInitializedAsync()
     {
-        _publications = await Http.GetFromJsonAsync<IEnumerable<Publication>>("https://localhost:7204/api/Publications") ?? null!;
+        _publications = await Http.GetFromJsonAsync<IEnumerable<Publication>>("https://localhost:7204/api/View") ?? null!;
         fulfil = true;
     }
 }
