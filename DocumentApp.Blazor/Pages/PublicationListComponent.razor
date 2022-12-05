@@ -6,9 +6,6 @@
 @using System.Threading.Tasks
 @using DocumentApp.Blazor.DTO;
 
-<PageTitle>PublicationList</PageTitle>
-
-<h3>Publication List</h3>
 
 @if (fulfil && _publications.Count() == 0)
 {
@@ -29,40 +26,339 @@ else if (!fulfil && _publications == null)
     </ul>
 }
 
-<form>
-<h3>Авторы</h3>
-<div class="title__autor__publication">
-    <div class="fio_autor">
-        <div class="text__fio__autor__modalWindow">Фамилия:</div>
-            <input name="surname" type="text" @bind="CurrentValue" />
-    </div>
-    <div class="fio_autor">
-        <div class="text__fio__autor__modalWindow">Имя:</div>
-        <input name="firstName" type="text" />
-    </div>
-    <div class="fio_autor">
-        <div class="text__fio__autor__modalWindow">Отчество:</div>
-        <input name="patronymic" type="text" />
-    </div>
-</div>
+   <!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Style/indexStyle.css" />
+    <link rel="stylesheet" href="Style/tabsStyle.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="Block_C">
+      <div class="container">
+        <div class="Block_B">
+          <h2 class="list__source__title">Список публикаций</h2>
+          <div class="filter">
+            <div class="title__filter">Фильт:</div>
+            <input type="text">
+            <button>Поиск</button>
+          </div>
+          <div class="list__source">
+            <ol>
+              <li>
+                <div class="list__source__block">
+                  Шарыгина Л.И. События и даты в истории радиоэлектроники.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Радиотехника. Большая Советская энциклопедия.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Чернецов А.В. О периодизации ранней истории восточнославянских
+                  пахотных орудий.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Краснов Ю.А. Древние и средневековые пахотные орудия Восточной
+                  Европы.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Шарыгина Л.И. События и даты в истории радиоэлектроники.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Радиотехника. Большая Советская энциклопедия.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Чернецов А.В. О периодизации ранней истории восточнославянских
+                  пахотных орудий.
+                </div>
+              </li>
+              <li>
+                <div class="list__source__block">
+                  Краснов Ю.А. Древние и средневековые пахотные орудия Восточной
+                  Европы.
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="block__button">
+          <a href="" class="AddSource__Record">Добавить новую публикацию </a>
+          <a href="" class="AddSource__conference">Добавить конференцию </a>
+        </div>
+        </div>
+        <div class="Block_A">
+          <div class="tabs">
+            <input
+              type="radio"
+              name="tab-btn"
+              id="tab-btn-1"
+              value=""
+              checked
+            >
+            <label class="block__tabs" for="tab-btn-1">Авторы</label>
+            <input type="radio" name="tab-btn" id="tab-btn-2" value="">
+            <label class="block__tabs" for="tab-btn-2">Название</label>
+            <input type="radio" name="tab-btn" id="tab-btn-3" value="">
+            <label class="block__tabs" for="tab-btn-3">Дата публикации</label>
 
-<h3>Название</h3>
-<div class="titile__name__publication">
-    <div class="text__Namepublication__modalWindow">
-        Название:
+            <div id="content-1">
+              <h3>Авторы</h3>
+              <div class="title__autor__publication">
+                <div class="fio_autor">Фамилия: Шарыгина</div>
+                <div class="fio_autor">Имя: Людмила</div>
+                <div class="fio_autor">Отчество: Иванова</div>
+              </div>
+            </div>
+            <div id="content-2">
+              <div class="name__publication all_publ">
+                <h3>Название</h3>
+                <div class="titile__name__publication">
+                  Название: События и даты в истории радиоэлектроники.
+                </div>
+                <div class="titile__name__publication">
+                  Том: гос. ун–т систем управления и радиоэлектроники.
+                </div>
+              </div>
+            </div>
+            <div id="content-3">
+              <div class="date__publication all_publ">
+                <h3>Дата публикации</h3>
+                20.11.2022
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="zatemnenie">
+        <div class="ADModalWindow close">
+          <div class="cross">X</div>
+          <form> 
+          <button>добавить</button>
+          <div class="modal-tabs">
+            <input
+              type="radio"
+              name="modal-tab-btn"
+              id="modal-tab-btn-1"
+              value=""
+              checked
+            >
+            <label class="block__tabs" for="modal-tab-btn-1">Авторы</label>
+            <input
+              type="radio"
+              name="modal-tab-btn"
+              id="modal-tab-btn-2"
+              value=""
+            >
+            <label class="block__tabs" for="modal-tab-btn-2">Название</label>
+            <input
+              type="radio"
+              name="modal-tab-btn"
+              id="modal-tab-btn-3"
+              value=""
+            >
+            <label class="block__tabs" for="modal-tab-btn-3"
+              >Дата публикации</label>
+            <!-- <input type="radio" name="tab-btn" id="tab-btn-4" value="" />
+            <label class="block__tabs" for="tab-btn-4">Вкладка 4</label> -->
+
+            <div id="modal-content-1">
+              <h3>Авторы</h3>
+              <div class="title__autor__publication">
+                <div class="fio_autor">
+                  <div class="text__fio__autor__modalWindow">Фамилия:</div>
+                  <input name="surname" type="text">
+                </div>
+                <div class="fio_autor">
+                  <div class="text__fio__autor__modalWindow">Имя:</div>
+                  <input name="firstName" type="text">
+                </div>
+                <div class="fio_autor">
+                  <div class="text__fio__autor__modalWindow">Отчество:</div>
+                  <input name="patronymic" type="text" />
+                </div>
+                <div class="fio_autor">
+                  <div class="text__fio__autor__modalWindow">Email:</div>
+                  <input name="email" type="email" />
+                </div>
+              </div>
+            </div>
+            <div id="modal-content-2">
+                <h3>Название</h3>
+                <div class="title__autor__publication">
+                  <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Название:</div>
+                    <input name="surname" type="text">
+                  </div>
+                  <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Описание:</div>
+                   <textarea name="" id="" cols="30" rows="10"></textarea>
+                  </div>
+                </div>                
+            </div>
+            <div id="modal-content-3">
+              <div class="modal-date__publication all_publ">
+                <h3>Дата публикации</h3>
+                <input type="date" name="DatePublication" id="DatePublication">
+              </div>
+            </div>
+            <!-- <div id="content-4">Содержимое 4...</div> -->
+          </div>
+        </div>
+      </form>
+      </div>
+      <div class="zatemnenie__conference">
+      <div class="ADModalWindow__conferenct close">
+        <div class="cross__conference">X</div>
+        <form> 
+        <button>добавить</button>
+        <div class="modal-tabs-conf">
+          <input
+            type="radio"
+            name="modal-tab-btn-conf"
+            id="modal-tab-btn-1-conf"
+            value=""
+            checked>
+          <label class="block__tabs" for="modal-tab-btn-1-conf">Авторы</label>
+          <input
+            type="radio"
+            name="modal-tab-btn-conf"
+            id="modal-tab-btn-2-conf"
+            value="">
+          <label class="block__tabs" for="modal-tab-btn-2-conf">Название</label>
+          <input
+            type="radio"
+            name="modal-tab-btn-conf"
+            id="modal-tab-btn-3-conf"
+            value="">
+          <label class="block__tabs" for="modal-tab-btn-3-conf">Дата публикации</label>
+          <div id="modal-content-1">
+            <h3>Авторы</h3>
+            <div class="title__autor__publication">
+              <div class="fio_autor">
+                <div class="text__fio__autor__modalWindow">Фамилия:</div>
+                <input name="surnameConferenceOrganizator" type="text">
+              </div>
+              <div class="fio_autor">
+                <div class="text__fio__autor__modalWindow">Имя:</div>
+                <input name="firstNameConferenceOrganizator" type="text">
+              </div>
+              <div class="fio_autor">
+                <div class="text__fio__autor__modalWindow">Отчество:</div>
+                <input name="patronymicConferenceOrganizator" type="text">
+              </div>
+            </div>
+          </div>
+          <div id="modal-content-2">
+              <h3>Название</h3>
+              <div class="title__autor__publication">
+                <div class="name__publication__modal">
+                  <div class="text__name__publication__modalWindow">Название:</div>
+                                    <input name="nameConference" type="text">
+                </div>
+                                <div class="name__publication__modal">
+                                    <div class="text__name__publication__modalWindow">Организатор:</div>
+                                    <input name="Organizaotr" type="text">
+                                </div>
+              <div class="name__publication__modal">
+                <div class="text__name__publication__modalWindow">Сокращенное название:</div>
+                <input name="ShortNameConference" type="text">
+              </div>
+                <div class="name__publication__modal">
+                  <div class="text__name__publication__modalWindow">Описание:</div>
+                 <textarea name="DiscriptionConferenc" id="" cols="30" rows="10"></textarea>
+                </div>
+                                <div class="name__publication__modal">
+                                    <div class="text__name__publication__modalWindow">Статус:</div>
+                                    <select name="hero[]">
+                                        <option value="offline" >Оффлайн</option>
+                                        <option value="online">Онлайн</option>
+                                    </select>
+                                </div>
+              </div>
+
+              <!-- <div class="titile__name__publication">
+                <div class="block__input">
+                <div class="text__Namepublication__modalWindow">
+                  Название:
+                </div>
+                  <input name="Namepublication" type="text" />
+                  <div class="text__Namepublication__modalWindow">
+                    Описание:
+                  </div>
+                <textarea name="" id="" cols="26" rows="3"></textarea>
+              </div>
+            </div> -->
+              
+
+          </div>
+          <div id="modal-content-3">
+            <div class="modal-date__publication all_publ">
+              <h3>Дата проведения</h3>
+              <input type="date" name="DatePublication" id="DatePublication">
+            </div>
+          </div>
+          <!-- <div id="content-4">Содержимое 4...</div> -->
+        </div>
+      </div>
+    </form>
     </div>
-    <input name="Namepublication" type="text" />
-</div>
 
-    <ConferencesPage></ConferencesPage>
+    </div>
+    <script>
+        let ButtonADModalWindow = document.querySelector(".AddSource__Record");
+let ADModalWindow = document.querySelector(".ADModalWindow");
+let CloseModalWindow = document.querySelector(".cross");
+let zatemnenie = document.querySelector(".zatemnenie");
 
-<div class="modal__block">
-<h3>Дата публикации</h3>
-<input type="date" name="DatePublication" id="DatePublication" />
-</div>
-    <button class="butt" @onclick="GetValuet">Добавить публикацию</button>
-<p>Current count: @NewValue</p>
-</form>
+ButtonADModalWindow.addEventListener("click", (e) => {
+  e.preventDefault();
+  ADModalWindow.classList.toggle("close");
+  zatemnenie.classList.toggle("zatemnenie__hiden");
+});
+CloseModalWindow.addEventListener("click", (e) => {
+  e.preventDefault();
+  ADModalWindow.classList.toggle("close");
+  zatemnenie.classList.toggle("zatemnenie__hiden");
+});
+
+
+
+let ButtonADModalWindow_c = document.querySelector(".AddSource__conference");
+let ADModalWindow_c = document.querySelector(".ADModalWindow__conferenct");
+let CloseModalWindow_c = document.querySelector(".cross__conference");
+let zatemnenie_c = document.querySelector(".zatemnenie__conference");
+
+ButtonADModalWindow_c.addEventListener("click", (e) => {
+  e.preventDefault();
+  ADModalWindow_c.classList.toggle("close");
+  zatemnenie_c.classList.toggle("zatemnenie__hiden");
+});
+CloseModalWindow_c.addEventListener("click", (e) => {
+  e.preventDefault();
+  ADModalWindow_c.classList.toggle("close");
+  zatemnenie_c.classList.toggle("zatemnenie__hiden");
+});
+
+
+
+</script>
+  </body>
+ 
+</html>
+
 
 @code {
     private IEnumerable<Publication> _publications = null!;

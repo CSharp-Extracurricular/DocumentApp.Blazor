@@ -4,6 +4,13 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+textarea {
+    resize: vertical;
+    width: 500px;
+    height: 100px;
+    font-size: 110%;
+}
+
 h1:focus {
     outline: none;
 }
@@ -111,4 +118,790 @@ a, .btn-link {
 
 .modal__block input{
     margin-bottom: 20px;
+}
+
+* {
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+input {
+    font-size: 105%;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+.container {
+    display: flex;
+}
+
+.Block_C {
+    position: relative;
+    height: 100%;
+    background: #ffe2c5;
+}
+
+.Block_A {
+    width: 100%;
+    height: 630px;
+    background: #ffcb96;
+    margin: 20px 60px 0 20px;
+    border-radius: 20px;
+}
+
+.Block_B {
+    width: 100%;
+    height: 630px;
+    background: #ffb163;
+    margin: 20px 20px 20px 60px;
+    border-radius: 20px;
+}
+
+/* list__source */
+li {
+    margin: 20px 0;
+}
+
+.list__source__title {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.list__source {
+    display: flex;
+    overflow-y: scroll;
+    height: 400px;
+    margin: 0 20px;
+}
+
+.list__source__block {
+    cursor: pointer;
+    margin: 0 10px;
+    width: 90%;
+    border-radius: 10px;
+    padding: 10px;
+    background: #ffcb96;
+}
+
+/* filter */
+
+.filter {
+    display: flex;
+    margin: 0 20px;
+    margin-bottom: 20px;
+}
+
+    .filter input {
+        width: 100%;
+        font-size: 110%;
+    }
+
+.title__filter {
+    font-size: 110%;
+    margin-right: 20px;
+}
+
+.filter button {
+    background-color: #ffd4a9;
+    border: none;
+    font-size: 20px;
+    padding: 2px 30px;
+    cursor: pointer;
+    margin-left: 20px;
+    z-index: 0;
+}
+
+/* info__source */
+
+.all_publ {
+    padding: 0 5px;
+}
+
+.info__source {
+    display: flex;
+    margin: 0 60px;
+    margin-top: 70px;
+}
+
+.form__info__source {
+    width: auto;
+}
+
+    .form__info__source form {
+        margin: 0 70px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .form__info__source input {
+        font-size: 16px;
+        padding: 5px;
+        border: none;
+        outline: none;
+    }
+
+    .form__info__source textarea {
+        resize: none;
+        font-size: 16px;
+        padding: 5px;
+        border: none;
+        outline: none;
+    }
+
+/* underSource */
+
+.AddSource__Record {
+    text-decoration: none;
+    text-align: center;
+    background-color: #ffd4a9;
+    color: black;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 50%;
+    float: right;
+    margin: 20px 20px 0 0;
+}
+
+    .AddSource__Record:hover {
+        background-color: #d49352;
+    }
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+/* ModalWindow */
+/* .ADModalWindow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 200px;
+  background-color: #d49352;
+  border-radius: 20px; 
+}*/
+.ADModalWindow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 410px;
+    background-color: #ffcb96;
+    border-radius: 20px;
+}
+
+.close {
+    display: none;
+}
+
+.cross {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.zatemnenie {
+    background: rgba(102, 102, 102, 0.246);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.zatemnenie__hiden {
+    display: block;
+}
+
+.fio_autor {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    margin-bottom: 5px;
+}
+
+.titile__name__publication {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+}
+
+.description__publication {
+    width: 20%;
+    max-height: 100px;
+    max-width: 300px;
+    resize: none;
+    font-size: 105%;
+}
+
+.modal-date__publication {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.ADModalWindow button {
+    background-color: #eea862;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    z-index: 1;
+    padding: 2px 30px;
+    cursor: pointer;
+}
+
+.tabs {
+    margin: 0 0 20px 20px;
+}
+
+.modal-tabs {
+    margin: 0 0 20px 20px;
+    z-index:2;
+}
+
+.tabs > input[type="radio"] {
+    display: none;
+}
+
+.modal-tabs > input[type="radio"] {
+    display: none;
+}
+
+.tabs > input[type="radio"]:checked + label {
+    background-color: #d49352;
+}
+
+.modal-tabs > input[type="radio"]:checked + label {
+    background-color: #eea862;
+}
+
+.tabs > div {
+    /* скрыть контент по умолчанию */
+    display: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+.modal-tabs > div {
+    /* скрыть контент по умолчанию */
+    display: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+/* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
+#modal-tab-btn-1:checked ~ #modal-content-1,
+#modal-tab-btn-2:checked ~ #modal-content-2,
+#modal-tab-btn-3:checked ~ #modal-content-3,
+#modal-tab-btn-4:checked ~ #modal-content-4 {
+    display: block;
+}
+
+#tab-btn-1:checked ~ #content-1,
+#tab-btn-2:checked ~ #content-2,
+#tab-btn-3:checked ~ #content-3,
+#tab-btn-4:checked ~ #content-4 {
+    display: block;
+}
+
+.tabs > label {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #ffd4a9;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.modal-tabs > label {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #ffd4a9;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.tabs > label:first-of-type {
+    margin-left: 0;
+}
+
+.modal-tabs > label:first-of-type {
+    margin-left: 0;
+}
+
+label {
+    text-align: center;
+    margin: 0 0 10px 20px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+label {
+    margin-left: 10px;
+}
+
+
+
+
+
+
+.tabs {
+    margin: 0 0 20px 20px;
+}
+
+.modal-tabs-conf {
+    margin: 0 0 20px 20px;
+    z-index: 2;
+}
+
+.tabs > input[type="radio"] {
+    display: none;
+}
+
+.modal-tabs-conf > input[type="radio"] {
+    display: none;
+}
+
+.tabs > input[type="radio"]:checked + label {
+    background-color: #d49352;
+}
+
+.modal-tabs-conf > input[type="radio"]:checked + label {
+    background-color: #eea862;
+}
+
+.tabs > div {
+    /* скрыть контент по умолчанию */
+    display: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+.modal-tabs-conf > div {
+    /* скрыть контент по умолчанию */
+    display: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+/* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
+#modal-tab-btn-1-conf:checked ~ #modal-content-1,
+#modal-tab-btn-2-conf:checked ~ #modal-content-2,
+#modal-tab-btn-3-conf:checked ~ #modal-content-3,
+#modal-tab-btn-4-conf:checked ~ #modal-content-4 {
+    display: block;
+}
+
+#tab-btn-1-conf:checked ~ #content-1,
+#tab-btn-2-conf:checked ~ #content-2,
+#tab-btn-3-conf:checked ~ #content-3,
+#tab-btn-4-conf:checked ~ #content-4 {
+    display: block;
+}
+
+.tabs > label {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #ffd4a9;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.modal-tabs-conf > label {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #ffd4a9;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.tabs-conf > label:first-of-type {
+    margin-left: 0;
+}
+
+.modal-tabs > label:first-of-type {
+    margin-left: 0;
+}
+
+label {
+    text-align: center;
+    margin: 0 0 10px 20px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+label {
+    margin-left: 10px;
+}
+
+* {
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+input {
+    font-size: 105%;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+.container {
+    display: flex;
+}
+
+.Block_C {
+    position: relative;
+    height: 100%;
+    background: #ffe2c5;
+}
+
+/* list__source */
+li {
+    margin: 20px 0;
+}
+
+.list__source__title {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.list__source {
+    display: flex;
+    overflow-y: scroll;
+    height: 400px;
+    margin: 0 20px;
+}
+
+.list__source__block {
+    cursor: pointer;
+    margin: 0 10px;
+    width: 90%;
+    border-radius: 10px;
+    padding: 10px;
+    background: #ffcb96;
+}
+
+/* filter */
+
+    .filter input {
+        width: 100%;
+        font-size: 110%;
+    }
+
+.title__filter {
+    font-size: 110%;
+    margin-right: 20px;
+}
+
+.filter button {
+    background-color: #ffd4a9;
+    border: none;
+    font-size: 20px;
+    padding: 2px 30px;
+    cursor: pointer;
+    margin-left: 20px;
+    z-index: 0;
+}
+
+/* info__source */
+
+.all_publ {
+    padding: 0 5px;
+}
+
+.info__source {
+    display: flex;
+    margin: 0 60px;
+    margin-top: 70px;
+}
+
+.form__info__source {
+    width: auto;
+}
+
+    .form__info__source form {
+        margin: 0 70px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .form__info__source input {
+        font-size: 16px;
+        padding: 5px;
+        border: none;
+        outline: none;
+    }
+
+    .form__info__source textarea {
+        resize: none;
+        font-size: 16px;
+        padding: 5px;
+        border: none;
+        outline: none;
+    }
+
+/* underSource */
+
+.AddSource__Record {
+    text-decoration: none;
+    text-align: center;
+    background-color: #ffd4a9;
+    color: black;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 35%;
+    margin: 20px 20px 0 0;
+}
+
+    .AddSource__Record:hover {
+        background-color: #d49352;
+    }
+
+.AddSource__conference {
+    text-decoration: none;
+    text-align: center;
+    background-color: #ffd4a9;
+    color: black;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 35%;
+    margin: 20px 20px 0 0;
+}
+
+    .AddSource__conference:hover {
+        background-color: #d49352;
+    }
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.block__button {
+    display: flex;
+    justify-content: center;
+}
+
+/* ModalWindow */
+/* .ADModalWindow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 200px;
+  background-color: #d49352;
+  border-radius: 20px; 
+}*/
+.ADModalWindow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 410px;
+    background-color: #ffcb96;
+    border-radius: 20px;
+}
+
+.ADModalWindow__conferenct {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 410px;
+    background-color: #ffcb96;
+    border-radius: 20px;
+}
+
+.close {
+    display: none;
+}
+
+.cross {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.cross__conference {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.zatemnenie {
+    background: rgba(102, 102, 102, 0.246);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.zatemnenie__conference {
+    background: rgba(102, 102, 102, 0.246);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.zatemnenie__hiden {
+    display: block;
+}
+
+.fio_autor {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin-bottom: 5px;
+}
+
+.name__publication__modal {
+    display: flex;
+    justify-content: space-between;
+    width: 57%;
+    margin-bottom: 5px;
+}
+
+.titile__name__publication {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.description__publication {
+    width: 20%;
+    max-height: 100px;
+    max-width: 300px;
+    resize: none;
+    font-size: 105%;
+}
+
+.modal-date__publication {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.ADModalWindow button {
+    background-color: #eea862;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    z-index: 1;
+    padding: 2px 30px;
+    cursor: pointer;
+}
+
+.ADModalWindow__conferenct button {
+    background-color: #eea862;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    z-index: 1;
+    padding: 2px 30px;
+    cursor: pointer;
+}
+
+/* Add block */
+
+.name__publication__modal textarea {
+    width: 80%;
+    height: 55px;
+    margin-top: 5px;
+    font-size: 105%;
+    resize: none;
+}
+
+.text__name__publication__modalWindow {
+    margin-right: 15%;
+}
+
+.name__publication__modal select {
+    width: 275px;
 }
