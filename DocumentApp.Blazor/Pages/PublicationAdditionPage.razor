@@ -42,7 +42,7 @@
     <p>Добавленные авторы</p>
 
     <ul>
-        @foreach (Author author in authors)
+        @foreach (AuthorDto author in authors)
         {
             <li>
                 @author.LastName @author.FirstName @author.PatronimicName
@@ -69,7 +69,7 @@
     <p>Добавленные записи об индексе</p>
 
     <ul>
-        @foreach (CitationIndex index in indices)
+        @foreach (CitationIndexDto index in indices)
         {
             <li>
                 @Enum.GetName(index.Indexator) 
@@ -121,9 +121,9 @@
 
 @code
 {
-    public List<Author> authors = new();
-    public List<CitationIndex> indices = new();
-    public Conference conference = null!;
+    public List<AuthorDto> authors = new();
+    public List<CitationIndexDto> indices = new();
+    public ConferenceDto conference = null!;
 
     public string title { get; set; } = string.Empty;
     public int publishingYear { get; set; }
@@ -146,7 +146,7 @@
 
     public void AddAuthor()
     {
-        Author author = new()
+        AuthorDto author = new()
         {
             Id = Guid.NewGuid(),
             FirstName = currentFirstName,
@@ -163,7 +163,7 @@
         currentEmail = string.Empty;
     } 
 
-    public void RemoveAuthor(Author author)
+    public void RemoveAuthor(AuthorDto author)
     {
         if (authors.Contains(author))
         {
@@ -177,7 +177,7 @@
 
     public void AddIndex()
     {
-        CitationIndex index = new()
+        CitationIndexDto index = new()
         {
             Indexator = currentIndexator,
             URL = new Uri(currentURL)
@@ -188,7 +188,7 @@
         currentURL = null!;
     }
 
-    public void RemoveIndex(CitationIndex index)
+    public void RemoveIndex(CitationIndexDto index)
     {
         if (indices.Contains(index))
         {
@@ -226,7 +226,7 @@
 
     public async void AddPublication()
     {
-        Publication publication = new()
+        PublicationDto publication = new()
         {
             Id = Guid.NewGuid(),
             Title = title,
@@ -234,23 +234,20 @@
             PublicationType = publicationType
         };
 
-        foreach (Author author in authors)
+        foreach (AuthorDto author in authors)
         {
-            author.Publication = publication;
             author.PublicationId = publication.Id;
             publication.Authors.Add(author);
         }
 
-        foreach (CitationIndex index in indices)
+        foreach (CitationIndexDto index in indices)
         {
-            index.Publication = publication;
             index.PublicationId = publication.Id;
             publication.CitationIndices.Add(index);
         }
 
         if (conference != null)
         {
-            conference.Publication = publication;
             conference.PublicationId = publication.Id;
             publication.Conference = conference;
         }
@@ -258,6 +255,6 @@
         await SendPostRequestWithBodyAsync(publication);
     }
 
-    public async Task SendPostRequestWithBodyAsync(Publication publication) 
-        => await Http.PostAsJsonAsync<PublicationDto>("https://localhost:7204/api/Edit", DtoConverter.Convert(publication));
+    public async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto) 
+        => await Http.PostAsJsonAsync<PublicationDto>("https://localhost:7204/api/Edit", publicationDto);
 }
