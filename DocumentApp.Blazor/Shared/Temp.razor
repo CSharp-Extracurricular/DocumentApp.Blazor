@@ -1,0 +1,119 @@
+﻿<div>
+    <div>
+        <form>
+            <div id="modal-content-1">
+                <h3>Авторы</h3>
+                <div class="title__autor__publication">
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Фамилия:</div>
+                        <input name="surname" type="text">
+                    </div>
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Имя:</div>
+                        <input name="firstName" type="text">
+                    </div>
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Отчество:</div>
+                        <input name="patronimic" type="text" />
+                    </div>
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Email:</div>
+                        <input name="email" type="email" />
+                    </div>
+                </div>
+            </div>
+            <div id="modal-content-2">
+                <h3>Название</h3>
+                <div class="title__autor__publication">
+                    <div class="name__publication__modal">
+                        <div class="text__name__publication__modalWindow">Название:</div>
+                        <input name="surname" type="text">
+                    </div>
+                </div>
+            </div>
+            <div id="modal-content-3">
+                <div class="modal-date__publication all_publ">
+                    <h3>Год публикации</h3>
+                    <input type="text" name="DatePublication" id="DatePublication">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <div>
+        <div class="cross__conference">X</div>
+        <form>
+            <div class="modal-tabs-conf">
+                <input type="radio"
+                       name="modal-tab-btn-conf"
+                       id="modal-tab-btn-1-conf"
+                       value=""
+                       checked>
+            </div>
+            <label class="block__tabs" for="modal-tab-btn-1-conf">Авторы</label>
+            <input type="radio"
+                   name="modal-tab-btn-conf"
+                   id="modal-tab-btn-2-conf"
+                   value="">
+            <label class="block__tabs" for="modal-tab-btn-2-conf">Название</label>
+            <input type="radio"
+                   name="modal-tab-btn-conf"
+                   id="modal-tab-btn-3-conf"
+                   value="">
+            <label class="block__tabs" for="modal-tab-btn-3-conf">Дата публикации</label>
+            <div id="modal-content-1">
+                <h3>Авторы</h3>
+                <div class="title__autor__publication">
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Фамилия:</div>
+                        <input name="surnameConferenceOrganizator" type="text">
+                    </div>
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Имя:</div>
+                        <input name="firstNameConferenceOrganizator" type="text">
+                    </div>
+                    <div class="fio_autor">
+                        <div class="text__fio__autor__modalWindow">Отчество:</div>
+                        <input name="patronymicConferenceOrganizator" type="text">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="modal-content-2">
+            <h3>Название</h3>
+            <div class="title__autor__publication">
+                <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Название:</div>
+                    <input name="nameConference" type="text">
+                </div>
+                <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Организатор:</div>
+                    <input name="Organizaotr" type="text">
+                </div>
+                <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Сокращенное название:</div>
+                    <input name="ShortNameConference" type="text">
+                </div>
+                <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Описание:</div>
+                    <textarea name="DiscriptionConferenc" id="" cols="30" rows="10"></textarea>
+                </div>
+                <div class="name__publication__modal">
+                    <div class="text__name__publication__modalWindow">Статус:</div>
+                    <select name="hero[]">
+                        <option value="offline">Оффлайн</option>
+                        <option value="online">Онлайн</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="modal-content-3">
+            <div class="modal-date__publication all_publ">
+                <h3>Дата проведения</h3>
+                <input type="date" name="DatePublication" id="DatePublication">
+            </div>
+        </div>
+    </div>
+</div>

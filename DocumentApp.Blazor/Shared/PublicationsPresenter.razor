@@ -1,0 +1,64 @@
+﻿@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using DocumentApp.DTO
+@using DocumentApp.Domain
+
+@if (fulfil && _publications.Count() == 0)
+{
+    <p>Публикации отсутствуют.</p>
+}
+else if (!fulfil && _publications == null)
+{
+    <p>Идет загрузка...</p>
+}
+
+@if (_publications != null)
+{
+    <ol>
+        @foreach (var publication in _publications)
+        {
+            <li>
+                <div class="list__source__block">
+                    <div>
+                        @foreach (Author author in publication.Authors)
+                        {
+                            <span>
+                                @(author.LastName) @(author.FirstName) @(author.PatronimicName)
+                                @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
+                                {
+                                    <span>, </span>
+                                }
+                            </span>
+                        }
+                    </div>
+                    <div>
+                        <b>@publication.Title</b>
+                    </div>
+                    <div>
+                        @publication.PublishingYear
+                    </div>
+                </div>
+            </li>
+        }
+    </ol>
+}
+
+@code {
+    private List<Publication> _publications = new List<Publication>();
+    private bool fulfil = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IEnumerable<PublicationDto> result = await Http.GetFromJsonAsync<IEnumerable<PublicationDto>>("https://localhost:7204/api/View") ?? null!;
+
+        foreach (PublicationDto publicationDto in result)
+        {
+            _publications.Add(DtoConverter.ConvertToNative(publicationDto));
+        }
+
+        fulfil = true;
+        return;
+    }
+}

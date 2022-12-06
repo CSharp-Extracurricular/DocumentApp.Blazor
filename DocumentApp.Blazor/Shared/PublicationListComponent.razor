@@ -1,0 +1,18 @@
+﻿@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using DocumentApp.DTO
+@using DocumentApp.Domain
+
+<div class="Block_C">
+    <h2 class="list__source__title">Список публикаций</h2>
+        
+    <PublicationsFilterField />
+
+    <PublicationsPresenter />
+        
+    <div class="block__button">
+        <a href="add" class="AddSource__Record">Добавить публикацию </a>
+    </div>
+</div>
