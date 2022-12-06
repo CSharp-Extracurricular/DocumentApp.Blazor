@@ -9,7 +9,7 @@
 
 @if (fulfil && _publications.Count() == 0)
 {
-    <p>Пользователи отсутствуют.</p>
+    <p>Публикации отсутствуют.</p>
 }
 else if (!fulfil && _publications == null)
 {
@@ -21,7 +21,7 @@ else if (!fulfil && _publications == null)
     <ul>
         @foreach (var publication in _publications)
         {
-            <li>@publication.PublishingYear</li>
+            <li>@publication.PublishingYear</li> //Author, Title, year div
         }
     </ul>
 }
@@ -38,11 +38,9 @@ else if (!fulfil && _publications == null)
   </head>
   <body>
     <div class="Block_C">
-      <div class="container">
-        <div class="Block_B">
           <h2 class="list__source__title">Список публикаций</h2>
           <div class="filter">
-            <div class="title__filter">Фильт:</div>
+            <div class="title__filter">Фильтр:</div>
             <input type="text">
             <button>Поиск</button>
           </div>
@@ -95,53 +93,11 @@ else if (!fulfil && _publications == null)
             </ol>
           </div>
           <div class="block__button">
-          <a href="" class="AddSource__Record">Добавить новую публикацию </a>
-          <a href="" class="AddSource__conference">Добавить конференцию </a>
+          <a href="" class="AddSource__Record">Добавить публикацию </a>
+          <a href="" class="AddSource__conference">Добавить фильтр </a>
         </div>
         </div>
-        <div class="Block_A">
-          <div class="tabs">
-            <input
-              type="radio"
-              name="tab-btn"
-              id="tab-btn-1"
-              value=""
-              checked
-            >
-            <label class="block__tabs" for="tab-btn-1">Авторы</label>
-            <input type="radio" name="tab-btn" id="tab-btn-2" value="">
-            <label class="block__tabs" for="tab-btn-2">Название</label>
-            <input type="radio" name="tab-btn" id="tab-btn-3" value="">
-            <label class="block__tabs" for="tab-btn-3">Дата публикации</label>
 
-            <div id="content-1">
-              <h3>Авторы</h3>
-              <div class="title__autor__publication">
-                <div class="fio_autor">Фамилия: Шарыгина</div>
-                <div class="fio_autor">Имя: Людмила</div>
-                <div class="fio_autor">Отчество: Иванова</div>
-              </div>
-            </div>
-            <div id="content-2">
-              <div class="name__publication all_publ">
-                <h3>Название</h3>
-                <div class="titile__name__publication">
-                  Название: События и даты в истории радиоэлектроники.
-                </div>
-                <div class="titile__name__publication">
-                  Том: гос. ун–т систем управления и радиоэлектроники.
-                </div>
-              </div>
-            </div>
-            <div id="content-3">
-              <div class="date__publication all_publ">
-                <h3>Дата публикации</h3>
-                20.11.2022
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="zatemnenie">
         <div class="ADModalWindow close">
           <div class="cross">X</div>
@@ -155,6 +111,7 @@ else if (!fulfil && _publications == null)
               value=""
               checked
             >
+             </div>
             <label class="block__tabs" for="modal-tab-btn-1">Авторы</label>
             <input
               type="radio"
@@ -214,11 +171,10 @@ else if (!fulfil && _publications == null)
                 <input type="date" name="DatePublication" id="DatePublication">
               </div>
             </div>
+             </form> 
             <!-- <div id="content-4">Содержимое 4...</div> -->
           </div>
         </div>
-      </form>
-      </div>
       <div class="zatemnenie__conference">
       <div class="ADModalWindow__conferenct close">
         <div class="cross__conference">X</div>
@@ -231,6 +187,7 @@ else if (!fulfil && _publications == null)
             id="modal-tab-btn-1-conf"
             value=""
             checked>
+            </div>
           <label class="block__tabs" for="modal-tab-btn-1-conf">Авторы</label>
           <input
             type="radio"
@@ -261,6 +218,7 @@ else if (!fulfil && _publications == null)
               </div>
             </div>
           </div>
+          </form> 
           <div id="modal-content-2">
               <h3>Название</h3>
               <div class="title__autor__publication">
@@ -313,48 +271,6 @@ else if (!fulfil && _publications == null)
           <!-- <div id="content-4">Содержимое 4...</div> -->
         </div>
       </div>
-    </form>
-    </div>
-
-    </div>
-    <script>
-        let ButtonADModalWindow = document.querySelector(".AddSource__Record");
-let ADModalWindow = document.querySelector(".ADModalWindow");
-let CloseModalWindow = document.querySelector(".cross");
-let zatemnenie = document.querySelector(".zatemnenie");
-
-ButtonADModalWindow.addEventListener("click", (e) => {
-  e.preventDefault();
-  ADModalWindow.classList.toggle("close");
-  zatemnenie.classList.toggle("zatemnenie__hiden");
-});
-CloseModalWindow.addEventListener("click", (e) => {
-  e.preventDefault();
-  ADModalWindow.classList.toggle("close");
-  zatemnenie.classList.toggle("zatemnenie__hiden");
-});
-
-
-
-let ButtonADModalWindow_c = document.querySelector(".AddSource__conference");
-let ADModalWindow_c = document.querySelector(".ADModalWindow__conferenct");
-let CloseModalWindow_c = document.querySelector(".cross__conference");
-let zatemnenie_c = document.querySelector(".zatemnenie__conference");
-
-ButtonADModalWindow_c.addEventListener("click", (e) => {
-  e.preventDefault();
-  ADModalWindow_c.classList.toggle("close");
-  zatemnenie_c.classList.toggle("zatemnenie__hiden");
-});
-CloseModalWindow_c.addEventListener("click", (e) => {
-  e.preventDefault();
-  ADModalWindow_c.classList.toggle("close");
-  zatemnenie_c.classList.toggle("zatemnenie__hiden");
-});
-
-
-
-</script>
   </body>
  
 </html>

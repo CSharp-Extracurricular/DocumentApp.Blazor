@@ -140,13 +140,13 @@ h3 {
 .Block_C {
     position: relative;
     height: 100%;
-    background: #ffe2c5;
+    background: #ffffff;
 }
 
 .Block_A {
     width: 100%;
     height: 630px;
-    background: #ffcb96;
+    background: #ffffff;
     margin: 20px 60px 0 20px;
     border-radius: 20px;
 }
@@ -154,7 +154,7 @@ h3 {
 .Block_B {
     width: 100%;
     height: 630px;
-    background: #ffb163;
+    background: #6610f2;
     margin: 20px 20px 20px 60px;
     border-radius: 20px;
 }
@@ -167,7 +167,7 @@ li {
 .list__source__title {
     text-align: center;
     margin-top: 40px;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 .list__source {
@@ -183,7 +183,7 @@ li {
     width: 90%;
     border-radius: 10px;
     padding: 10px;
-    background: #ffcb96;
+    background: #ffffff;
 }
 
 /* filter */
@@ -273,11 +273,11 @@ li {
 }
 
     .AddSource__Record:hover {
-        background-color: #d49352;
+        background-color: white;
     }
 
 a {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 
@@ -301,7 +301,7 @@ a {
     transform: translate(-50%, -50%);
     width: 800px;
     height: 410px;
-    background-color: #ffcb96;
+    background-color: #ffffff;
     border-radius: 20px;
 }
 
@@ -387,7 +387,7 @@ a {
 }
 
 .tabs > input[type="radio"]:checked + label {
-    background-color: #d49352;
+    background-color: white;
 }
 
 .modal-tabs > input[type="radio"]:checked + label {
@@ -499,7 +499,7 @@ label {
 }
 
 .tabs > input[type="radio"]:checked + label {
-    background-color: #d49352;
+    background-color: white;
 }
 
 .modal-tabs-conf > input[type="radio"]:checked + label {
@@ -540,7 +540,7 @@ label {
     text-align: center;
     vertical-align: middle;
     user-select: none;
-    background-color: #ffd4a9;
+    background-color: #ffffff;
     border: 1px solid transparent;
     padding: 2px 8px;
     font-size: 16px;
@@ -608,7 +608,7 @@ h3 {
 .Block_C {
     position: relative;
     height: 100%;
-    background: #ffe2c5;
+    background: #ffffff;
 }
 
 /* list__source */
@@ -619,7 +619,7 @@ li {
 .list__source__title {
     text-align: center;
     margin-top: 40px;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 .list__source {
@@ -635,7 +635,7 @@ li {
     width: 90%;
     border-radius: 10px;
     padding: 10px;
-    background: #ffcb96;
+    background: #ffffff;
 }
 
 /* filter */
@@ -651,7 +651,8 @@ li {
 }
 
 .filter button {
-    background-color: #ffd4a9;
+    background-color: black;
+    color: white;
     border: none;
     font-size: 20px;
     padding: 2px 30px;
@@ -703,8 +704,8 @@ li {
 .AddSource__Record {
     text-decoration: none;
     text-align: center;
-    background-color: #ffd4a9;
-    color: black;
+    background-color: black;
+    color: white;
     border: 1px solid transparent;
     padding: 2px 8px;
     font-size: 16px;
@@ -718,14 +719,14 @@ li {
 }
 
     .AddSource__Record:hover {
-        background-color: #d49352;
+        background-color: white;
     }
 
 .AddSource__conference {
     text-decoration: none;
     text-align: center;
-    background-color: #ffd4a9;
-    color: black;
+    background-color: black;
+    color: white;
     border: 1px solid transparent;
     padding: 2px 8px;
     font-size: 16px;
@@ -739,7 +740,7 @@ li {
 }
 
     .AddSource__conference:hover {
-        background-color: #d49352;
+        background-color: white;
     }
 
 a {
@@ -772,7 +773,7 @@ a {
     transform: translate(-50%, -50%);
     width: 800px;
     height: 410px;
-    background-color: #ffcb96;
+    background-color: #ffffff;
     border-radius: 20px;
 }
 
@@ -784,7 +785,7 @@ a {
     transform: translate(-50%, -50%);
     width: 800px;
     height: 410px;
-    background-color: #ffcb96;
+    background-color: #ffffff;
     border-radius: 20px;
 }
 
