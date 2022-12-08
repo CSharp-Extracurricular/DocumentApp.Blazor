@@ -5,118 +5,124 @@
 @using System.Net.Http.Json
 @using System.Threading.Tasks
 @using DocumentApp.DTO
+@inject NavigationManager _nav
 
 <PageTitle>Добавление публикации</PageTitle>
 
 <div>
-    <h3>Основная информация</h3>
+    <div>
+        <h3>Основная информация</h3>
 
-    <p>Название</p>
-    <input @bind="title"/>
+        <p>Название</p>
+        <input @bind="title" />
 
-    <p>Год публикации</p>
-    <input @bind="publishingYear"/>
+        <p>Год публикации</p>
+        <input @bind="publishingYear" />
 
-    <p>Тип публикации</p>
-    <select @bind="publicationType">
-        @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+        <p>Тип публикации</p>
+        <select @bind="publicationType">
+            @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+            {
+                <option value="@_publicationType">@_publicationType</option>
+            }
+        </select>
+    </div>
+    <div>
+        <h3>Авторы</h3>
+
+        <p>Фамилия</p>
+        <input @bind="currentLastName" />
+
+        <p>Имя</p>
+        <input @bind="currentFirstName" />
+
+        <p>Отчество</p>
+        <input @bind="currentPatronimicName" />
+
+        <p>E-mail</p>
+        <input @bind="currentEmail" />
+
+        <p>Добавленные авторы</p>
+
+        <ul>
+            @foreach (AuthorDto author in authors)
+            {
+                <li>
+                    @author.LastName @author.FirstName @author.PatronimicName
+                    <button @onclick="() => RemoveAuthor(author)">Удалить автора</button>
+                </li>
+            }
+        </ul>
+
+        <button @onclick="AddAuthor">Добавить автора</button>
+    </div>
+    <div>
+        <h3>Индексация</h3>
+
+        <p>Индексатор</p>
+        <select @bind="currentIndexator">
+            @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
+            {
+                <option value="@indexatorType">@indexatorType</option>
+            }
+        </select>
+
+        <p>URL записи об индексе</p>
+        <input type="url" @bind="currentURL" />
+
+        <p>Добавленные записи об индексе</p>
+
+        <ul>
+            @foreach (CitationIndexDto index in indices)
+            {
+                <li>
+                    @Enum.GetName(index.Indexator)
+                    @index.URL
+                    <button @onclick="() => RemoveIndex(index)">Удалить запись об индексе</button>
+                </li>
+            }
+        </ul>
+
+        <button @onclick="AddIndex">Добавить индекс</button>
+    </div>
+    <div>
+        <h3>Представление на конференции</h3>
+
+        <p>Краткое название</p>
+        <input @bind="currentShortName" />
+
+        <p>Полное название</p>
+        <input @bind="currentFullName" />
+
+        <p>Дата начала</p>
+        <input type="date" @bind="currentStartDate" />
+
+        <p>Дата окончания</p>
+        <input type="date" @bind="currentEndDate" />
+
+        <p>Тип конференции</p>
+        <select @bind="currentType">
+            @foreach (var conferenceType in Enum.GetValues(typeof(ConferenceType)))
+            {
+                <option value="@conferenceType">@conferenceType</option>
+            }
+        </select>
+
+        <p>Место проведения</p>
+        <input @bind="currentLocation" />
+
+        <button @onclick="AddConference">Добавить конференцию</button>
+
+        @if (conference != null)
         {
-            <option value="@_publicationType">@_publicationType</option>
+            <p>@conference.ShortName</p>
+            <button @onclick="RemoveConference">Удалить конференцию</button>
         }
-    </select>
-
-    <h3>Авторы</h3>
-
-    <p>Фамилия</p>
-    <input @bind="currentLastName" />
-
-    <p>Имя</p>
-    <input @bind="currentFirstName"/>
-
-    <p>Отчество</p>
-    <input @bind="currentPatronimicName" />
-
-    <p>E-mail</p>
-    <input @bind="currentEmail"/>
-
-    <p>Добавленные авторы</p>
-
-    <ul>
-        @foreach (AuthorDto author in authors)
-        {
-            <li>
-                @author.LastName @author.FirstName @author.PatronimicName
-                <button @onclick="() => RemoveAuthor(author)">Удалить автора</button>
-            </li>
-        }
-    </ul>
-    
-    <button @onclick="AddAuthor">Добавить автора</button>
-
-    <h3>Индексация</h3>
-
-    <p>Индексатор</p>
-    <select @bind="currentIndexator">
-        @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
-        {
-            <option value="@indexatorType">@indexatorType</option>
-        }
-    </select>
-
-    <p>URL записи об индексе</p>
-    <input type="url" @bind="currentURL"/>
-
-    <p>Добавленные записи об индексе</p>
-
-    <ul>
-        @foreach (CitationIndexDto index in indices)
-        {
-            <li>
-                @Enum.GetName(index.Indexator) 
-                @index.URL
-                <button @onclick="() => RemoveIndex(index)">Удалить запись об индексе</button>
-            </li>
-        }
-    </ul>
-
-    <button @onclick="AddIndex">Добавить индекс</button>
-
-    <h3>Представление на конференции</h3>
-
-    <p>Краткое название</p>
-    <input @bind="currentShortName" />
-
-    <p>Полное название</p>
-    <input @bind="currentFullName" />
-
-    <p>Дата начала</p>
-    <input type="date" @bind="currentStartDate" />
-
-    <p>Дата окончания</p>
-    <input type="date" @bind="currentEndDate" />
-
-    <p>Тип конференции</p>
-    <select @bind="currentType">
-        @foreach (var conferenceType in Enum.GetValues(typeof(ConferenceType)))
-        {
-            <option value="@conferenceType">@conferenceType</option>
-        }
-    </select>
-
-    <p>Место проведения</p>
-    <input @bind="currentLocation" />
-
-    <button @onclick="AddConference">Добавить конференцию</button>
-
-    @if (conference != null)
-    {
-        <p>@conference.ShortName</p>
-        <button @onclick="RemoveConference">Удалить конференцию</button>
-    }
+    </div>
 </div>
 
 <div>
-    <button @onclick="AddPublication">Добавить</button>
+    <button class="AddSource__Record" @onclick="async () => await AddPublication()">Добавить</button>
 </div>
 
 @code
@@ -224,7 +230,7 @@
         currentLocation = string.Empty;
     }
 
-    public async void AddPublication()
+    public async Task AddPublication()
     {
         PublicationDto publication = new()
         {
@@ -253,6 +259,7 @@
         }
 
         await SendPostRequestWithBodyAsync(publication);
+        _nav.NavigateTo("");
     }
 
     public async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto) 

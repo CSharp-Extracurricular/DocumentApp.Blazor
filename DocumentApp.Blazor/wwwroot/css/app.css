@@ -268,7 +268,7 @@ li {
     cursor: pointer;
     margin-bottom: 10px;
     width: 50%;
-    float: right;
+    /* float: right; */
     margin: 20px 20px 0 0;
 }
 
@@ -395,20 +395,20 @@ a {
 }
 
 .tabs > div {
-    /* скрыть контент по умолчанию */
+    /* Г±ГЄГ°Г»ГІГј ГЄГ®Г­ГІГҐГ­ГІ ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ */
     display: none;
     padding: 10px 15px;
     border-radius: 4px;
 }
 
 .modal-tabs > div {
-    /* скрыть контент по умолчанию */
+    /* Г±ГЄГ°Г»ГІГј ГЄГ®Г­ГІГҐГ­ГІ ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ */
     display: none;
     padding: 10px 15px;
     border-radius: 4px;
 }
 
-/* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
+/* Г®ГІГ®ГЎГ°Г Г§ГЁГІГј ГЄГ®Г­ГІГҐГ­ГІ, Г±ГўГїГ§Г Г­Г­Г»Г© Г± ГўГ ГЎГ°Г Г­Г­Г®Г© Г°Г Г¤ГЁГ®ГЄГ­Г®ГЇГЄГ®Г© (input type="radio") */
 #modal-tab-btn-1:checked ~ #modal-content-1,
 #modal-tab-btn-2:checked ~ #modal-content-2,
 #modal-tab-btn-3:checked ~ #modal-content-3,
@@ -507,20 +507,20 @@ label {
 }
 
 .tabs > div {
-    /* скрыть контент по умолчанию */
+    /* Г±ГЄГ°Г»ГІГј ГЄГ®Г­ГІГҐГ­ГІ ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ */
     display: none;
     padding: 10px 15px;
     border-radius: 4px;
 }
 
 .modal-tabs-conf > div {
-    /* скрыть контент по умолчанию */
+    /* Г±ГЄГ°Г»ГІГј ГЄГ®Г­ГІГҐГ­ГІ ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ */
     display: none;
     padding: 10px 15px;
     border-radius: 4px;
 }
 
-/* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
+/* Г®ГІГ®ГЎГ°Г Г§ГЁГІГј ГЄГ®Г­ГІГҐГ­ГІ, Г±ГўГїГ§Г Г­Г­Г»Г© Г± ГўГ ГЎГ°Г Г­Г­Г®Г© Г°Г Г¤ГЁГ®ГЄГ­Г®ГЇГЄГ®Г© (input type="radio") */
 #modal-tab-btn-1-conf:checked ~ #modal-content-1,
 #modal-tab-btn-2-conf:checked ~ #modal-content-2,
 #modal-tab-btn-3-conf:checked ~ #modal-content-3,
@@ -719,7 +719,7 @@ li {
 }
 
     .AddSource__Record:hover {
-        background-color: white;
+        background-color: #424242;
     }
 
 .AddSource__conference {

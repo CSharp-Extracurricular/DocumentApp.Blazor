@@ -40,6 +40,7 @@ else if (!fulfil && _publications == null)
                         @publication.PublishingYear
                     </div>
                 </div>
+                <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
             </li>
         }
     </ol>
@@ -60,5 +61,11 @@ else if (!fulfil && _publications == null)
 
         fulfil = true;
         return;
+    }
+
+    public async Task DeletePublication(Publication publication)
+    {
+        await Http.DeleteAsync("https://localhost:7204/api/Edit/" + publication.Id.ToString());
+        _publications.Remove(publication);
     }
 }
