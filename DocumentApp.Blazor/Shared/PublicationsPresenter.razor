@@ -65,7 +65,7 @@ else if (!fulfil && _publications == null)
 
     public async Task DeletePublication(Publication publication)
     {
-        await Http.DeleteAsync("https://localhost:7204/api/Edit/" + publication.Id.ToString());
+        await Http.DeleteAsync($"https://localhost:7204/api/Edit/{publication.Id.ToString()}");
         _publications.Remove(publication);
     }
 }
