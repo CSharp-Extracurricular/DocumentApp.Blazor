@@ -80,7 +80,7 @@
         </div>
         <div class="block__info">
         <p>Год публикации</p>
-        <input @bind="publishingYear" />
+        <input maxlength="4" type="number" @bind="publishingYear" />
         </div>
 
         <div class="block__info">
@@ -234,7 +234,7 @@
     public ConferenceDto conference = null!;
 
     public string title { get; set; } = string.Empty;
-    public int publishingYear { get; set; }
+    public int publishingYear { get; set; } = 2022;
     public PublicationType publicationType { get; set; }
 
     public string currentFirstName { get; set; } = string.Empty;
