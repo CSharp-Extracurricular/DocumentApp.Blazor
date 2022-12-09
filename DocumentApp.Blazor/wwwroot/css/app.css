@@ -267,7 +267,7 @@ li {
     margin-left: 6px;
     cursor: pointer;
     margin-bottom: 10px;
-    width: 50%;
+    width: 100%;
     /* float: right; */
     margin: 20px 20px 0 0;
 }
@@ -714,8 +714,9 @@ li {
     margin-left: 6px;
     cursor: pointer;
     margin-bottom: 10px;
-    width: 35%;
+    width: 100%;
     margin: 20px 20px 0 0;
+    background: #062666;
 }
 
     .AddSource__Record:hover {
@@ -905,4 +906,36 @@ a {
 
 .name__publication__modal select {
     width: 275px;
+}
+
+.MianContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Info {
+    width: 50%;
+}
+
+.MianContainer button {
+    background: #062666;
+    color: white;
+    border:none;
+    padding: 7px 20px
+}
+
+.h3 {
+    text-decoration: underline;
+}
+
+.block__info p {
+    margin-bottom: 1px;
+}
+
+.block__info{
+    margin-bottom: 15px;
+}
+
+.block__info select{
+    font-size: 105%;
 }

@@ -9,39 +9,48 @@
 
 <PageTitle>Добавление публикации</PageTitle>
 
-<div>
-    <div>
+<div class="MianContainer">
+    <div class="MainInfo Info">
         <h3>Основная информация</h3>
 
+        <div class="block__info">
         <p>Название</p>
         <input @bind="title" />
-
+        </div>
+        <div class="block__info">
         <p>Год публикации</p>
         <input @bind="publishingYear" />
+        </div>
 
+        <div class="block__info">
         <p>Тип публикации</p>
         <select @bind="publicationType">
-            @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+            @foreach (var _publicationType in
+            Enum.GetValues(typeof(PublicationType)))
             {
                 <option value="@_publicationType">@_publicationType</option>
             }
         </select>
+        </div>
     </div>
-    <div>
+    <div class="AutorInfo Info">
         <h3>Авторы</h3>
-
+        <div class="block__info">
         <p>Фамилия</p>
         <input @bind="currentLastName" />
-
+        </div>
+        <div class="block__info">
         <p>Имя</p>
         <input @bind="currentFirstName" />
-
+        </div>
+        <div class="block__info">
         <p>Отчество</p>
         <input @bind="currentPatronimicName" />
-
+        </div>
+        <div class="block__info">
         <p>E-mail</p>
         <input @bind="currentEmail" />
-
+        </div>
         <p>Добавленные авторы</p>
 
         <ul>
@@ -49,16 +58,18 @@
             {
                 <li>
                     @author.LastName @author.FirstName @author.PatronimicName
-                    <button @onclick="() => RemoveAuthor(author)">Удалить автора</button>
+                    <button @onclick="() => RemoveAuthor(author)">
+                        Удалить автора
+                    </button>
                 </li>
             }
         </ul>
 
         <button @onclick="AddAuthor">Добавить автора</button>
     </div>
-    <div>
+    <div class="IndexInfo Info">
         <h3>Индексация</h3>
-
+        <div class="block__info">
         <p>Индексатор</p>
         <select @bind="currentIndexator">
             @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
@@ -66,49 +77,60 @@
                 <option value="@indexatorType">@indexatorType</option>
             }
         </select>
+        </div>
 
+        <div class="block__info">
         <p>URL записи об индексе</p>
         <input type="url" @bind="currentURL" />
-
+        </div>
+        <div class="block__info">
         <p>Добавленные записи об индексе</p>
 
         <ul>
             @foreach (CitationIndexDto index in indices)
             {
                 <li>
-                    @Enum.GetName(index.Indexator)
-                    @index.URL
-                    <button @onclick="() => RemoveIndex(index)">Удалить запись об индексе</button>
+                    @Enum.GetName(index.Indexator) @index.URL
+                    <button @onclick="() => RemoveIndex(index)">
+                        Удалить запись об индексе
+                    </button>
                 </li>
             }
         </ul>
-
+        </div>
         <button @onclick="AddIndex">Добавить индекс</button>
     </div>
-    <div>
+    <div class="ConferencInfo Info">
         <h3>Представление на конференции</h3>
-
+        <div class="block__info">
         <p>Краткое название</p>
         <input @bind="currentShortName" />
-
+        </div>
+        <div class="block__info">
         <p>Полное название</p>
         <input @bind="currentFullName" />
-
+        </div>
+        <div class="block__info">
         <p>Дата начала</p>
         <input type="date" @bind="currentStartDate" />
-
+        </div>
+        <div class="block__info">
         <p>Дата окончания</p>
         <input type="date" @bind="currentEndDate" />
-
+        </div>
+        <div class="block__info">
         <p>Тип конференции</p>
         <select @bind="currentType">
-            @foreach (var conferenceType in Enum.GetValues(typeof(ConferenceType)))
+            @foreach (var conferenceType in
+            Enum.GetValues(typeof(ConferenceType)))
             {
                 <option value="@conferenceType">@conferenceType</option>
             }
         </select>
-
+        </div>
+        <div class="block__info">
         <p>Место проведения</p>
+        </div>
         <input @bind="currentLocation" />
 
         <button @onclick="AddConference">Добавить конференцию</button>
@@ -122,7 +144,10 @@
 </div>
 
 <div>
-    <button class="AddSource__Record" @onclick="async () => await AddPublication()">Добавить</button>
+    <button class="AddSource__Record"
+            @onclick="async () => await AddPublication()">
+        Добавить
+    </button>
 </div>
 
 @code
