@@ -4,6 +4,7 @@
 @using System.Threading.Tasks
 @using DocumentApp.DTO
 @using DocumentApp.Domain
+@inject NavigationManager _nav
 
 @if (fulfil && _publications.Count() == 0)
 {
@@ -41,7 +42,7 @@ else if (!fulfil && _publications == null)
                     </div>
                 </div>
                 <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
-                <button @onclick="async () => await EditPublication(publication)">Изменить</button>
+                <button @onclick="@(()=>_nav.NavigateTo($"/edit/{publication.Id}"))">Изменить</button>
             </li>
         }
     </ol>
@@ -69,13 +70,6 @@ else if (!fulfil && _publications == null)
         await Http.DeleteAsync($"https://localhost:7204/api/Edit/{publication.Id.ToString()}");
         _publications.Remove(publication);
     }
-    public async Task EditPublication(Publication publication)
-    {
-        await Http.PutAsJsonAsync($"https://localhost:7204/api/Edit", DtoConverter.Convert(publication));
-        _publications.Remove(publication);
 
-        PublicationDto? PuBlIcAtIoN = await Http.GetFromJsonAsync<PublicationDto>("https://localhost:7204/api/View" + publication.Id.ToString());
-        
-        _publications.Add(DtoConverter.ConvertToNative(PuBlIcAtIoN));
-    }
+    
 }
