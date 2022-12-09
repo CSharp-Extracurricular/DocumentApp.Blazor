@@ -917,13 +917,6 @@ a {
     width: 50%;
 }
 
-.MianContainer button {
-    background: #062666;
-    color: white;
-    border:none;
-    padding: 7px 20px
-}
-
 .h3 {
     text-decoration: underline;
 }
@@ -936,6 +929,88 @@ a {
     margin-bottom: 15px;
 }
 
-.block__info select{
-    font-size: 105%;
+    .block__info select {
+        font-size: 105%;
+        width: 233px;
+
+    }
+
+.ButtonDeleteAutor {
+    background: #740000;
+    color: white;
+    border: none;
+    padding: 7px 14px;
 }
+
+.button {
+    background: #062666;
+    color: white;
+    border: none;
+    padding: 7px 20px;
+    margin-top: 15px;
+}
+
+.TitleMini {
+    font-weight: bold;
+}
+
+.TitleInput__NameInfo {
+    width: 45%
+}
+
+
+/* Tabs */
+
+body {
+    font: 12px/16px Arial;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+}
+
+.tabs {
+    margin-bottom: 20px;
+}
+
+    .tabs li {
+        display: inline-block;
+
+    }
+
+        .tabs li a {
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            padding: 0 10px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+.tabs-content {
+    width: 640px;
+    height: 100px;
+    overflow: hidden;
+}
+
+    .tabs-content ul {
+        list-style: none;
+        height: 120px;
+        overflow: scroll;
+        overflow-y: hidden;
+    }
+
+        .tabs-content ul li {
+            width: 638px;
+            height: 98px;
+            border: 1px dashed red;
+        }
+
+            .tabs-content ul li div {
+                padding: 20px;
+            }
+
+            li{
+                margin-top: 8px;
+            }

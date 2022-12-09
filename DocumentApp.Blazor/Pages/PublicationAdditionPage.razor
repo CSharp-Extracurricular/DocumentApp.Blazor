@@ -9,13 +9,74 @@
 
 <PageTitle>Добавление публикации</PageTitle>
 
-<div class="MianContainer">
-    <div class="MainInfo Info">
+<style>
+    .tabs {
+        font-size: 0;
+    }
+
+        .tabs > input[type="radio"] {
+            display: none;
+        }
+
+        .tabs > div {
+            /* скрыть контент по умолчанию */
+            display: none;
+            border: 1px solid #e0e0e0;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+
+    /* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
+    #tab-btn-1:checked ~ #content-1,
+    #tab-btn-2:checked ~ #content-2,
+    #tab-btn-3:checked ~ #content-3,
+    #tab-btn-4:checked ~ #content-4 {
+        display: block;
+    }
+
+    .tabs > label {
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        padding: 2px 8px;
+        font-size: 16px;
+        line-height: 1.5;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+        cursor: pointer;
+        position: relative;
+        top: 1px;
+    }
+
+        .tabs > label:not(:first-of-type) {
+            border-left: none;
+        }
+
+    .tabs > input[type="radio"]:checked + label {
+        background-color: #fff;
+        border-bottom: 1px solid #fff;
+    }
+</style>
+
+<div class="tabs">
+    <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
+    <label for="tab-btn-1">Основная информация</label>
+    <input type="radio" name="tab-btn" id="tab-btn-2" value="">
+    <label for="tab-btn-2">Авторы</label>
+    <input type="radio" name="tab-btn" id="tab-btn-3" value="">
+    <label for="tab-btn-3">Индексация</label>
+    <input type="radio" name="tab-btn" id="tab-btn-4" value="">
+    <label for="tab-btn-4">Конференция</label>
+
+    <div id="content-1">
+     <div class="MainInfo Info">
         <h3>Основная информация</h3>
 
         <div class="block__info">
         <p>Название</p>
-        <input @bind="title" />
+        <input class="TitleInput__NameInfo" @bind="title" />
         </div>
         <div class="block__info">
         <p>Год публикации</p>
@@ -33,6 +94,8 @@
         </select>
         </div>
     </div>
+    </div>
+    <div id="content-2">
     <div class="AutorInfo Info">
         <h3>Авторы</h3>
         <div class="block__info">
@@ -51,96 +114,110 @@
         <p>E-mail</p>
         <input @bind="currentEmail" />
         </div>
-        <p>Добавленные авторы</p>
+        <p class="TitleMini">Добавленные авторы</p>
 
-        <ul>
+        <ol>
             @foreach (AuthorDto author in authors)
             {
+                <br />
                 <li>
                     @author.LastName @author.FirstName @author.PatronimicName
-                    <button @onclick="() => RemoveAuthor(author)">
-                        Удалить автора
+                    <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
+                        Х
                     </button>
                 </li>
             }
-        </ul>
+        </ol>
 
-        <button @onclick="AddAuthor">Добавить автора</button>
+        <button class="button" @onclick="AddAuthor">Добавить автора</button>
     </div>
-    <div class="IndexInfo Info">
-        <h3>Индексация</h3>
-        <div class="block__info">
-        <p>Индексатор</p>
-        <select @bind="currentIndexator">
-            @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
-            {
-                <option value="@indexatorType">@indexatorType</option>
-            }
-        </select>
-        </div>
-
-        <div class="block__info">
-        <p>URL записи об индексе</p>
-        <input type="url" @bind="currentURL" />
-        </div>
-        <div class="block__info">
-        <p>Добавленные записи об индексе</p>
-
-        <ul>
-            @foreach (CitationIndexDto index in indices)
-            {
-                <li>
-                    @Enum.GetName(index.Indexator) @index.URL
-                    <button @onclick="() => RemoveIndex(index)">
-                        Удалить запись об индексе
-                    </button>
-                </li>
-            }
-        </ul>
-        </div>
-        <button @onclick="AddIndex">Добавить индекс</button>
     </div>
-    <div class="ConferencInfo Info">
-        <h3>Представление на конференции</h3>
-        <div class="block__info">
-        <p>Краткое название</p>
-        <input @bind="currentShortName" />
-        </div>
-        <div class="block__info">
-        <p>Полное название</p>
-        <input @bind="currentFullName" />
-        </div>
-        <div class="block__info">
-        <p>Дата начала</p>
-        <input type="date" @bind="currentStartDate" />
-        </div>
-        <div class="block__info">
-        <p>Дата окончания</p>
-        <input type="date" @bind="currentEndDate" />
-        </div>
-        <div class="block__info">
-        <p>Тип конференции</p>
-        <select @bind="currentType">
-            @foreach (var conferenceType in
-            Enum.GetValues(typeof(ConferenceType)))
-            {
-                <option value="@conferenceType">@conferenceType</option>
-            }
-        </select>
-        </div>
-        <div class="block__info">
-        <p>Место проведения</p>
-        </div>
-        <input @bind="currentLocation" />
+    <div id="content-3">
+        <div class="IndexInfo Info">
+            <h3>Индексация</h3>
+            <div class="block__info">
+                <p>Индексатор</p>
+                <select @bind="currentIndexator">
+                    @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
+                    {
+                        <option value="@indexatorType">@indexatorType</option>
+                    }
+                </select>
+            </div>
 
-        <button @onclick="AddConference">Добавить конференцию</button>
+            <div class="block__info">
+                <p>URL записи об индексе</p>
+                <input type="url" @bind="currentURL" />
+            </div>
+            <div class="block__info">
+                <p>Добавленные записи об индексе</p>
 
-        @if (conference != null)
-        {
-            <p>@conference.ShortName</p>
-            <button @onclick="RemoveConference">Удалить конференцию</button>
-        }
+                <ul>
+                    @foreach (CitationIndexDto index in indices)
+                    {
+                        <li>
+                            @Enum.GetName(index.Indexator) @index.URL
+                            <button @onclick="() => RemoveIndex(index)">
+                                Удалить запись об индексе
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <button class="button" @onclick="AddIndex">Добавить индекс</button>
+        </div>
     </div>
+    <div id="content-4">
+        <div class="ConferencInfo Info">
+            <h3>Представление на конференции</h3>
+            <div class="block__info">
+                <p>Краткое название</p>
+                <input @bind="currentShortName" />
+            </div>
+            <div class="block__info">
+                <p>Полное название</p>
+                <input @bind="currentFullName" />
+            </div>
+            <div class="block__info">
+                <p>Дата начала</p>
+                <input type="date" @bind="currentStartDate" />
+            </div>
+            <div class="block__info">
+                <p>Дата окончания</p>
+                <input type="date" @bind="currentEndDate" />
+            </div>
+            <div class="block__info">
+                <p>Тип конференции</p>
+                <select @bind="currentType">
+                    @foreach (var conferenceType in
+                    Enum.GetValues(typeof(ConferenceType)))
+                    {
+                        <option value="@conferenceType">@conferenceType</option>
+                    }
+                </select>
+            </div>
+            <div class="block__info">
+                <p>Место проведения</p>
+            </div>
+            <input @bind="currentLocation" />
+            <br />
+            <button class="button" @onclick="AddConference">Добавить конференцию</button>
+
+            @if (conference != null)
+            {
+                <p>@conference.ShortName</p>
+                <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="MianContainer">
+
+
+
+
 </div>
 
 <div>
