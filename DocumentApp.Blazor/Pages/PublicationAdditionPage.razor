@@ -256,7 +256,6 @@
     {
         AuthorDto author = new()
         {
-            Id = Guid.NewGuid(),
             FirstName = currentFirstName,
             LastName = currentLastName,
             PatronimicName = currentPatronimicName,
@@ -312,7 +311,6 @@
     {
         conference = new()
         {
-            Id = Guid.NewGuid(),
             ShortName = currentShortName,
             FullName = currentFullName,
             StartDate = currentStartDate,
@@ -336,7 +334,6 @@
     {
         PublicationDto publication = new()
         {
-            Id = Guid.NewGuid(),
             Title = title,
             PublishingYear = publishingYear,
             PublicationType = publicationType
