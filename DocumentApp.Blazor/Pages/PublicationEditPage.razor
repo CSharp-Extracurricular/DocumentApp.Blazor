@@ -258,7 +258,6 @@
     {
         AuthorDto author = new()
             {
-                Id = Guid.NewGuid(),
                 FirstName = currentFirstName,
                 LastName = currentLastName,
                 PatronimicName = currentPatronimicName,
@@ -314,7 +313,6 @@
     {
         conference = new()
             {
-                Id = Guid.NewGuid(),
                 ShortName = currentShortName,
                 FullName = currentFullName,
                 StartDate = currentStartDate,
@@ -336,9 +334,9 @@
 
     public async Task AddPublication()
     {
-        PublicationDto publication = new()
+        PublicationDto publicationDto = new()
             {
-                Id = Guid.NewGuid(),
+                Id = editingPublicationGuid,
                 Title = title,
                 PublishingYear = publishingYear,
                 PublicationType = publicationType
@@ -346,43 +344,66 @@
 
         foreach (AuthorDto author in authors)
         {
-            author.PublicationId = publication.Id;
-            publication.Authors.Add(author);
+            author.PublicationId = publicationDto.Id;
+            publicationDto.Authors.Add(author);
         }
 
         foreach (CitationIndexDto index in indices)
         {
-            index.PublicationId = publication.Id;
-            publication.CitationIndices.Add(index);
+            index.PublicationId = publicationDto.Id;
+            publicationDto.CitationIndices.Add(index);
         }
 
         if (conference != null)
         {
-            conference.PublicationId = publication.Id;
-            publication.Conference = conference;
+            conference.PublicationId = publicationDto.Id;
+            publicationDto.Conference = conference;
         }
 
-        await SendPostRequestWithBodyAsync(publication);
+        await SendPutRequest(publicationDto);
         _nav.NavigateTo("");
     }
 
-    public async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto)
-        => await Http.PostAsJsonAsync<PublicationDto>("https://localhost:7204/api/Edit", publicationDto);
-}
-
-@code {
     [Parameter]
-    public string currentPublicationIdString { get; set; }
+    public string? currentPublicationIdString { get; set; }
 
-    public Guid publicationGuid;
+    public Guid editingPublicationGuid { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Guid.TryParse(currentPublicationIdString, out publicationGuid);
+        Guid publicationGuid = Guid.Empty;
+
+        if (currentPublicationIdString != null && currentPublicationIdString.Length != 0)
+        {
+            bool parsingResult = Guid.TryParse(currentPublicationIdString, out publicationGuid);
+
+            if (parsingResult)
+            {
+                editingPublicationGuid = publicationGuid;
+                PublicationDto? publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{currentPublicationIdString}") ?? null!;
+                FillInputFields(publication);
+            }
+            else
+            {
+                throw new Exception("Guid parsing error");
+            }
+        }
+        else
+        {
+            throw new Exception("Publication Guid not found");
+        }
     }
 
-    public async Task EditPublication(Publication publication)
+    public void FillInputFields(PublicationDto publicationDto)
     {
-        await Http.PutAsJsonAsync($"https://localhost:7204/api/Edit/{publication.Id.ToString()}", DtoConverter.Convert(publication));
+        title = publicationDto.Title;
+        publishingYear = publicationDto.PublishingYear;
+        publicationType = publicationDto.PublicationType;
+
+        authors = publicationDto.Authors;
+        indices = publicationDto.CitationIndices;
+        conference = publicationDto.Conference ?? null!;
     }
+
+    public async Task SendPutRequest(PublicationDto publicationDto) => await Http.PutAsJsonAsync<PublicationDto>($"https://localhost:7204/api/Edit/{publicationDto.Id.ToString()}", publicationDto);
 }
