@@ -125,7 +125,6 @@
             <ol>
                 @foreach (AuthorDto author in authors)
                 {
-                    <br />
                     <li>
                         @author.LastName @author.FirstName @author.PatronimicName
                         <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">

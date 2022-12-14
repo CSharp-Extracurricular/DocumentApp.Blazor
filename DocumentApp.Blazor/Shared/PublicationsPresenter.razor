@@ -25,6 +25,7 @@ else if (!fulfil && _publications == null)
                     <div>
                         @foreach (Author author in publication.Authors)
                         {
+                          <p>@(author.LastName)</p>
                             <span>
                                 @(author.LastName) @(author.FirstName) @(author.PatronimicName)
                                 @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
