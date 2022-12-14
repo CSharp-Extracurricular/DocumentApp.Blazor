@@ -6,6 +6,20 @@
 @using DocumentApp.Domain
 @inject NavigationManager _nav
 
+<div class="filter">
+    <div class="title__filter">Фильтр:</div>
+    <input type="text" @bind="@startYear" />
+    <input type="text" @bind="@endYear" />
+    <select @bind="publicationType">
+        <option>All</option>
+        @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+        {
+                    <option value="@_publicationType">@_publicationType</option>
+        }
+        </select>
+    <input type="button" button class="AddSource__Search" value="Поиск" @onclick="@SearchIssues" />
+</div>
+
 @if (fulfil && _publications.Count() == 0)
 {
     <p>Публикации отсутствуют.</p>
@@ -72,5 +86,53 @@ else if (!fulfil && _publications == null)
         _publications.Remove(publication);
     }
 
-    
+    private int? startYear = null;
+    private int? endYear = null;
+    private PublicationType? publicationType = null;
+    string query = string.Empty;
+
+    public async Task SearchIssues()
+    {
+        _publications.Clear();
+        query = GetQueryString(startYear, endYear, publicationType);
+        IEnumerable<PublicationDto> result = await Http.GetFromJsonAsync<IEnumerable<PublicationDto>>(query) ?? null!;
+
+        foreach (PublicationDto publicationDto in result)
+        {
+            _publications.Add(DtoConverter.ConvertToNative(publicationDto));
+        }
+    }
+
+    public string GetQueryString(int? start, int? end, PublicationType? type)
+    {
+        // https://localhost:7204/api/View/filter?StartYear=2003&EndYear=2022&PublicationType=0
+        string query = "https://localhost:7204/api/View/filter?";
+
+        if (start != null)
+        {
+            query += $"StartYear={start}";
+        }
+
+        if (end != null)
+        {
+            if (start != null)
+            {
+                query += "&";
+            }
+
+            query += $"EndYear={end}";
+        }
+
+        if (type != null)
+        {
+            if (start != null || end != null)
+            {
+                query += "&";
+            }
+
+            query += $"&PublicationType={(int?) publicationType}";
+        }
+
+        return query;
+    }
 }
