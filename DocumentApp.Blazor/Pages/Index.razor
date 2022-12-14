@@ -8,19 +8,98 @@
 
 <PageTitle>Список публикаций</PageTitle>
 
+@if (publication != null)
+{
+    <ol>
+        @foreach (var publication in publication)
+        {
+            <li>
+                <div class="list__source__block">
+                    <div>
+                        @foreach (AuthorDto author in publication.Authors)
+                        {
+                            <p>@(author.LastName)</p>
+                            <span>
+                                @(author.LastName) @(author.FirstName) @(author.PatronimicName)
+                                @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
+                                {
+                                    <span>, </span>
+                                }
+                            </span>
+                        }
+                    </div>
+                    <div>
+                        <b>@publication.Title</b>
+                    </div>
+                    <div>
+                        @publication.PublishingYear
+                    </div>
+                </div>
+               @* <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
+                <button @onclick="@(()=>_nav.NavigateTo($"/edit/{publication.Id}"))">Изменить</button>*@
+            </li>
+        }
+    </ol>
+}
+
 <div class="filter">
     <div class="title__filter">Фильтр:</div>
-    <input type="text" @bind-value="@searchTerm" />
+    <input type="text" @bind="@startYear" />
+    <input type="text" @bind="@endYear" />
+    <select @bind="publicationType">
+        <option>All</option>
+        @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+        {
+                    <option value="@_publicationType">@_publicationType</option>
+        }
+        </select>
     <input type="button" button class="AddSource__Search" value="Поиск" @onclick="@SearchIssues" />
 </div>
 
 @code {
-    private string searchTerm;
-    private List<Publication> publication;
+    private int? startYear = null;
+    private int? endYear = null;
+    private PublicationType? publicationType = null;
+    private List<PublicationDto> publication = new();
+    string query = string.Empty;
 
-    async Task SearchIssues()
+    public async Task SearchIssues()
     {
-         publication = await Controller.SearchIssuesAsync(searchTerm);
+        query = GetQueryString(startYear, endYear, publicationType);
+        publication = (await Http.GetFromJsonAsync<IEnumerable<PublicationDto>>(query)).ToList();
+    }
+
+    public string GetQueryString(int? start, int? end, PublicationType? type)
+    {
+        // https://localhost:7204/api/View/filter?StartYear=2003&EndYear=2022&PublicationType=0
+        string query = "https://localhost:7204/api/View/filter?";
+
+        if (start != null)
+        {
+            query += $"StartYear={start}";
+        }
+
+        if (end != null)
+        {
+            if (start != null)
+            {
+                query += "&";
+            }
+
+            query += $"EndYear={end}";
+        }
+
+        if (type != null)
+        {
+            if (start != null || end != null)
+            {
+                query += "&";
+            }
+
+            query += $"&PublicationType={(int?) publicationType}";
+        }
+
+        return query;
     }
 }
 
