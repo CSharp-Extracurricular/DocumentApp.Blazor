@@ -8,8 +8,11 @@
 
 <div class="filter">
     <div class="title__filter">Фильтр:</div>
+    Начальный год:
     <input type="text" @bind="@startYear" />
+    Конечный год: 
     <input type="text" @bind="@endYear" />
+    Тип публикации: 
     <select @bind="publicationType">
         <option>All</option>
         @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
@@ -39,7 +42,6 @@ else if (!fulfil && _publications == null)
                     <div>
                         @foreach (Author author in publication.Authors)
                         {
-                          <p>@(author.LastName)</p>
                             <span>
                                 @(author.LastName) @(author.FirstName) @(author.PatronimicName)
                                 @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
