@@ -1,0 +1,15 @@
+﻿@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using DocumentApp.DTO
+@using DocumentApp.Domain
+@inject NavigationManager _nav
+
+<div class="Block_C">
+    <h2 class="list__source__title">Список публикаций</h2>
+
+    <PublicationsPresenter />
+
+    <button class="AddSource__Record" @onclick="@(()=>_nav.NavigateTo("/add"))">Добавить публикацию</button>
+</div>

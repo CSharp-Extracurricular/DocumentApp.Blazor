@@ -1,0 +1,22 @@
+﻿@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using DocumentApp.DTO
+
+<div class="filter">
+    <div class="title__filter">Фильтр:</div>
+    <input type="text" @bind-value="@searchTerm" />
+    <input type="button" button class="AddSource__Search" value="Поиск" @onclick="@SearchIssues" />
+</div>
+
+
+@code {
+    private string searchTerm;
+    private List<Publication> publication;
+
+    async Task SearchIssues()
+    {
+       // publication = await Controller.SearchIssuesAsync(searchTerm);
+    }
+}

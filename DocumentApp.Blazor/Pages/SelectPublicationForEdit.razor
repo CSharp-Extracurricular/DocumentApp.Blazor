@@ -1,0 +1,16 @@
+﻿@page "/edit"
+
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using DocumentApp.DTO
+@inject NavigationManager _nav
+
+<PageTitle>Редактирование публикации</PageTitle>
+
+<div class="Block_C">
+    <h2 class="list__source__title">Редактирование публикации</h2>
+</div>
+
+<PublicationsPresenter />
