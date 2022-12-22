@@ -1,20 +1,13 @@
 ﻿@page "/add"
 
-@using System.Net.Http
 @inject HttpClient Http
-@using System.Net.Http.Json
-@using System.Threading.Tasks
-@using DocumentApp.DTO
 @inject NavigationManager _nav
 
 <PageTitle>Добавление публикации</PageTitle>
 
-
 <div class="Block_C">
     <h2 class="list__source__title">Добавление публикации</h2>
 </div>
-
-
 
 <style>
     .tabs {
@@ -78,89 +71,87 @@
     <label for="tab-btn-4">Конференция</label>
 
     <div id="content-1">
-     <div class="MainInfo Info">
-        <h3>Основная информация</h3>
+        <div class="MainInfo Info">
+            <h3>Основная информация</h3>
 
-        <div class="block__info">
-        <p>Название</p>
-        <input class="TitleInput__NameInfo" @bind="title" />
+            <div class="block__info">
+                <p>Название</p>
+                <input class="TitleInput__NameInfo" @bind="Publication.Title"/>
+            </div>
+            <div class="block__info">
+                <p>Год публикации</p>
+                <input maxlength="4" type="number" @bind="Publication.PublishingYear"/>
+            </div>
+            <div class="block__info">
+                <p>Тип публикации</p>
+                <select @bind="Publication.PublicationType">
+                    @foreach (var _publicationType in
+                        Enum.GetValues(typeof(PublicationType)))
+                    {
+                        <option value="@_publicationType">@_publicationType</option>
+                    }
+                </select>
+            </div>
         </div>
-        <div class="block__info">
-        <p>Год публикации</p>
-        <input maxlength="4" type="number" @bind="publishingYear" />
-        </div>
-
-        <div class="block__info">
-        <p>Тип публикации</p>
-        <select @bind="publicationType">
-            @foreach (var _publicationType in
-            Enum.GetValues(typeof(PublicationType)))
-            {
-                <option value="@_publicationType">@_publicationType</option>
-            }
-        </select>
-        </div>
-    </div>
     </div>
     <div id="content-2">
-    <div class="AutorInfo Info">
-        <h3>Авторы</h3>
-        <div class="block__info">
-        <p>Фамилия</p>
-        <input @bind="currentLastName" />
-        </div>
-        <div class="block__info">
-        <p>Имя</p>
-        <input @bind="currentFirstName" />
-        </div>
-        <div class="block__info">
-        <p>Отчество</p>
-        <input @bind="currentPatronimicName" />
-        </div>
-        <div class="block__info">
-        <p>E-mail</p>
-        <input @bind="currentEmail" />
-        </div>
-        <p class="TitleMini">Добавленные авторы</p>
+        <div class="AutorInfo Info">
+            <h3>Авторы</h3>
+            <div class="block__info">
+                <p>Фамилия</p>
+                <input @bind="Author.LastName"/>
+            </div>
+            <div class="block__info">
+                <p>Имя</p>
+                <input @bind="Author.FirstName"/>
+            </div>
+            <div class="block__info">
+                <p>Отчество</p>
+                <input @bind="Author.PatronimicName"/>
+            </div>
+            <div class="block__info">
+                <p>E-mail</p>
+                <input @bind="Author.Email"/>
+            </div>
+            <p class="TitleMini">Добавленные авторы</p>
 
-        <ol>
-            @foreach (AuthorDto author in authors)
-            {
-                <br />
-                <li>
-                    @author.LastName @author.FirstName @author.PatronimicName
-                    <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
-                        Х
-                    </button>
-                </li>
-            }
-        </ol>
+            <ol>
+                @foreach (AuthorDto author in Publication.Authors)
+                {
+                    <br/>
+                    <li>
+                        @author.LastName @author.FirstName @author.PatronimicName
+                        <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
+                            Удалить
+                        </button>
+                    </li>
+                }
+            </ol>
 
-        <button class="button" @onclick="AddAuthor">Добавить автора</button>
-    </div>
+            <button class="button" @onclick="AddAuthor">Добавить автора</button>
+        </div>
     </div>
     <div id="content-3">
         <div class="IndexInfo Info">
             <h3>Индексация</h3>
             <div class="block__info">
                 <p>Индексатор</p>
-                <select @bind="currentIndexator">
+                <select @bind="Index.Indexator">
                     @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
                     {
                         <option value="@indexatorType">@indexatorType</option>
                     }
                 </select>
             </div>
-
             <div class="block__info">
                 <p>URL записи об индексе</p>
-                <input type="url" @bind="currentURL" />
+                <input type="url" value="@Index.URL"
+                       @onchange="@((ChangeEventArgs __e) => Index.URL = new Uri(__e?.Value?.ToString()))" />
             </div>
             <div class="block__info">
                 <p>Добавленные записи об индексе</p>
-
                 <ul>
-                    @foreach (CitationIndexDto index in indices)
+                    @foreach (CitationIndexDto index in Publication.CitationIndices)
                     {
                         <li>
                             @Enum.GetName(index.Indexator) @index.URL
@@ -179,23 +170,23 @@
             <h3>Представление на конференции</h3>
             <div class="block__info">
                 <p>Краткое название</p>
-                <input @bind="currentShortName" />
+                <input @bind="Conference.ShortName" />
             </div>
             <div class="block__info">
                 <p>Полное название</p>
-                <input @bind="currentFullName" />
+                <input @bind="Conference.FullName" />
             </div>
             <div class="block__info">
                 <p>Дата начала</p>
-                <input type="date" @bind="currentStartDate" />
+                <input type="date" @bind="Conference.StartDate" />
             </div>
             <div class="block__info">
                 <p>Дата окончания</p>
-                <input type="date" @bind="currentEndDate" />
+                <input type="date" @bind="Conference.EndDate" />
             </div>
             <div class="block__info">
                 <p>Тип конференции</p>
-                <select @bind="currentType">
+                <select @bind="Conference.Type">
                     @foreach (var conferenceType in
                     Enum.GetValues(typeof(ConferenceType)))
                     {
@@ -206,25 +197,20 @@
             <div class="block__info">
                 <p>Место проведения</p>
             </div>
-            <input @bind="currentLocation" />
+            <input @bind="Conference.Location" />
             <br />
             <button class="button" @onclick="AddConference">Добавить конференцию</button>
 
-            @if (conference != null)
+            @if (Publication.Conference != null)
             {
-                <p>@conference.ShortName</p>
+                <p>@Publication.Conference.ShortName</p>
                 <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
             }
         </div>
     </div>
 </div>
 
-
 <div class="MianContainer">
-
-
-
-
 </div>
 
 <div>
@@ -236,52 +222,25 @@
 
 @code
 {
-    public List<AuthorDto> authors = new();
-    public List<CitationIndexDto> indices = new();
-    public ConferenceDto conference = null!;
+    private const string PageAfterAddition = "";
 
-    public string title { get; set; } = string.Empty;
-    public int publishingYear { get; set; } = 2022;
-    public PublicationType publicationType { get; set; }
-
-    public string currentFirstName { get; set; } = string.Empty;
-    public string currentLastName { get; set; } = string.Empty;
-    public string? currentPatronimicName { get; set; }
-    public string currentEmail { get; set; } = string.Empty;
-
-    public Indexator currentIndexator { get; set; }
-    public string currentURL { get; set; } = string.Empty;
-
-    public string currentShortName { get; set; } = string.Empty;
-    public string currentFullName { get; set; } = string.Empty;
-    public DateTime currentStartDate { get; set; } = DateTime.Now;
-    public DateTime currentEndDate { get; set; } = DateTime.Now;
-    public ConferenceType currentType { get; set; }
-    public string currentLocation { get; set; } = string.Empty;
+    public PublicationDto Publication = new() { PublishingYear = 2022 };
+    public AuthorDto Author = new();
+    public CitationIndexDto Index = new();
+    public ConferenceDto Conference = new() { StartDate = DateTime.Now, EndDate = DateTime.Now };
 
     public void AddAuthor()
     {
-        AuthorDto author = new()
-        {
-            FirstName = currentFirstName,
-            LastName = currentLastName,
-            PatronimicName = currentPatronimicName,
-            Email = currentEmail
-        };
-
-        authors.Add(author);
-
-        currentFirstName = string.Empty;
-        currentLastName = string.Empty;
-        currentPatronimicName = string.Empty;
-        currentEmail = string.Empty;
+        Author.PublicationId = Publication.Id;
+        Publication.Authors.Add(Author);
+        Author = new AuthorDto();
     } 
 
     public void RemoveAuthor(AuthorDto author)
     {
-        if (authors.Contains(author))
+        if (Publication.Authors.Contains(author))
         {
-            authors.Remove(author);
+            Publication.Authors.Remove(author);
         }
         else
         {
@@ -291,22 +250,16 @@
 
     public void AddIndex()
     {
-        CitationIndexDto index = new()
-        {
-            Indexator = currentIndexator,
-            URL = new Uri(currentURL)
-        };
-
-        indices.Add(index);
-
-        currentURL = null!;
+        Index.PublicationId = Publication.Id;
+        Publication.CitationIndices.Add(Index);
+        Index = new CitationIndexDto();
     }
 
     public void RemoveIndex(CitationIndexDto index)
     {
-        if (indices.Contains(index))
+        if (Publication.CitationIndices.Contains(index))
         {
-            indices.Remove(index);
+            Publication.CitationIndices.Remove(index);
         }
         else
         {
@@ -316,58 +269,22 @@
 
     public void AddConference()
     {
-        conference = new()
-        {
-            ShortName = currentShortName,
-            FullName = currentFullName,
-            StartDate = currentStartDate,
-            EndDate = currentEndDate,
-            Type = currentType,
-            Location = currentLocation
-        };
+        Conference.PublicationId = Publication.Id;
+        Publication.Conference = Conference;
     }
 
     public void RemoveConference()
     {
-        conference = null!;
-        currentShortName = string.Empty;
-        currentFullName = string.Empty;
-        currentStartDate = DateTime.Now;
-        currentEndDate = DateTime.Now;
-        currentLocation = string.Empty;
+        Publication.Conference = null;
+        Conference = new ConferenceDto{ StartDate = DateTime.Now, EndDate = DateTime.Now };
     }
 
     public async Task AddPublication()
     {
-        PublicationDto publication = new()
-        {
-            Title = title,
-            PublishingYear = publishingYear,
-            PublicationType = publicationType
-        };
-
-        foreach (AuthorDto author in authors)
-        {
-            author.PublicationId = publication.Id;
-            publication.Authors.Add(author);
-        }
-
-        foreach (CitationIndexDto index in indices)
-        {
-            index.PublicationId = publication.Id;
-            publication.CitationIndices.Add(index);
-        }
-
-        if (conference != null)
-        {
-            conference.PublicationId = publication.Id;
-            publication.Conference = conference;
-        }
-
-        await SendPostRequestWithBodyAsync(publication);
-        _nav.NavigateTo("");
+        await SendPostRequestWithBodyAsync(Publication);
+        _nav.NavigateTo(PageAfterAddition);
     }
 
     public async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto) 
-        => await Http.PostAsJsonAsync<PublicationDto>("https://localhost:7204/api/Edit", publicationDto);
+        => await Http.PostAsJsonAsync("https://localhost:7204/api/Edit", publicationDto);
 }
