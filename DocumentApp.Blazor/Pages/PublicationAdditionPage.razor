@@ -1,7 +1,7 @@
 ﻿@page "/add"
 
 @inject HttpClient Http
-@inject NavigationManager _nav
+@inject NavigationManager Nav
 
 <PageTitle>Добавление публикации</PageTitle>
 
@@ -9,215 +9,123 @@
     <h2 class="list__source__title">Добавление публикации</h2>
 </div>
 
-<style>
-    .tabs {
-        font-size: 0;
-    }
+<div class="MianContainer">
+    <div class="tabs">
+        <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
+        <label for="tab-btn-1">Основная информация</label>
+        <input type="radio" name="tab-btn" id="tab-btn-2" value="">
+        <label for="tab-btn-2">Авторы</label>
+        <input type="radio" name="tab-btn" id="tab-btn-3" value="">
+        <label for="tab-btn-3">Индексация</label>
+        <input type="radio" name="tab-btn" id="tab-btn-4" value="">
+        <label for="tab-btn-4">Конференция</label>
 
-        .tabs > input[type="radio"] {
-            display: none;
-        }
+        <div id="content-1">
+            <div class="Info">
+                <h3 class="addition-page-tab-header">Основная информация</h3>
 
-        .tabs > div {
-            /* скрыть контент по умолчанию */
-            display: none;
-            border: 1px solid #e0e0e0;
-            padding: 10px 15px;
-            font-size: 16px;
-        }
+                <InputField @bind-BindingValue="Publication.Title">Название</InputField>
 
-    /* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
-    #tab-btn-1:checked ~ #content-1,
-    #tab-btn-2:checked ~ #content-2,
-    #tab-btn-3:checked ~ #content-3,
-    #tab-btn-4:checked ~ #content-4 {
-        display: block;
-    }
-
-    .tabs > label {
-        display: inline-block;
-        text-align: center;
-        vertical-align: middle;
-        user-select: none;
-        background-color: #f5f5f5;
-        border: 1px solid #e0e0e0;
-        padding: 2px 8px;
-        font-size: 16px;
-        line-height: 1.5;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-        cursor: pointer;
-        position: relative;
-        top: 1px;
-    }
-
-        .tabs > label:not(:first-of-type) {
-            border-left: none;
-        }
-
-    .tabs > input[type="radio"]:checked + label {
-        background-color: #fff;
-        border-bottom: 1px solid #fff;
-    }
-</style>
-
-<div class="tabs">
-    <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
-    <label for="tab-btn-1">Основная информация</label>
-    <input type="radio" name="tab-btn" id="tab-btn-2" value="">
-    <label for="tab-btn-2">Авторы</label>
-    <input type="radio" name="tab-btn" id="tab-btn-3" value="">
-    <label for="tab-btn-3">Индексация</label>
-    <input type="radio" name="tab-btn" id="tab-btn-4" value="">
-    <label for="tab-btn-4">Конференция</label>
-
-    <div id="content-1">
-        <div class="MainInfo Info">
-            <h3>Основная информация</h3>
-
-            <div class="block__info">
-                <p>Название</p>
-                <input class="TitleInput__NameInfo" @bind="Publication.Title"/>
-            </div>
-            <div class="block__info">
-                <p>Год публикации</p>
-                <input maxlength="4" type="number" @bind="Publication.PublishingYear"/>
-            </div>
-            <div class="block__info">
-                <p>Тип публикации</p>
-                <select @bind="Publication.PublicationType">
-                    @foreach (var _publicationType in
-                        Enum.GetValues(typeof(PublicationType)))
-                    {
-                        <option value="@_publicationType">@_publicationType</option>
-                    }
-                </select>
+                <div class="block__info">
+                    <p>Год публикации</p>
+                    <input maxlength="4" type="number" @bind="Publication.PublishingYear"/>
+                </div>
+                
+                <InputFieldSelector @bind-BindingValue="Publication.PublicationType">
+                    Тип публикации
+                </InputFieldSelector>
             </div>
         </div>
-    </div>
-    <div id="content-2">
-        <div class="AutorInfo Info">
-            <h3>Авторы</h3>
-            <div class="block__info">
-                <p>Фамилия</p>
-                <input @bind="Author.LastName"/>
-            </div>
-            <div class="block__info">
-                <p>Имя</p>
-                <input @bind="Author.FirstName"/>
-            </div>
-            <div class="block__info">
-                <p>Отчество</p>
-                <input @bind="Author.PatronimicName"/>
-            </div>
-            <div class="block__info">
-                <p>E-mail</p>
-                <input @bind="Author.Email"/>
-            </div>
-            <p class="TitleMini">Добавленные авторы</p>
+        <div id="content-2">
+            <div class="Info">
+                <h3>Авторы</h3>
 
-            <ol>
-                @foreach (AuthorDto author in Publication.Authors)
-                {
-                    <br/>
-                    <li>
-                        @author.LastName @author.FirstName @author.PatronimicName
-                        <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
-                            Удалить
-                        </button>
-                    </li>
-                }
-            </ol>
+                <InputField @bind-BindingValue="Author.LastName">Фамилия</InputField>
+                <InputField @bind-BindingValue="Author.FirstName">Имя</InputField>
+                <InputField @bind-BindingValue="Author.PatronimicName">Отчество</InputField>
+                <InputField @bind-BindingValue="Author.Email">E-mail</InputField>
 
-            <button class="button" @onclick="AddAuthor">Добавить автора</button>
-        </div>
-    </div>
-    <div id="content-3">
-        <div class="IndexInfo Info">
-            <h3>Индексация</h3>
-            <div class="block__info">
-                <p>Индексатор</p>
-                <select @bind="Index.Indexator">
-                    @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
+                <p class="TitleMini">Добавленные авторы</p>
+
+                <ol>
+                    @foreach (AuthorDto author in Publication.Authors)
                     {
-                        <option value="@indexatorType">@indexatorType</option>
-                    }
-                </select>
-            </div>
-            <div class="block__info">
-                <p>URL записи об индексе</p>
-                <input type="url" value="@Index.URL"
-                       @onchange="@((ChangeEventArgs __e) => Index.URL = new Uri(__e?.Value?.ToString()))" />
-            </div>
-            <div class="block__info">
-                <p>Добавленные записи об индексе</p>
-                <ul>
-                    @foreach (CitationIndexDto index in Publication.CitationIndices)
-                    {
+                        <br/>
                         <li>
-                            @Enum.GetName(index.Indexator) @index.URL
-                            <button @onclick="() => RemoveIndex(index)">
-                                Удалить запись об индексе
+                            @author.LastName @author.FirstName @author.PatronimicName
+                            <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
+                                Удалить
                             </button>
                         </li>
                     }
-                </ul>
+                </ol>
+
+                <button class="button" @onclick="AddAuthor">Добавить автора</button>
             </div>
-            <button class="button" @onclick="AddIndex">Добавить индекс</button>
+        </div>
+        <div id="content-3">
+            <div class="Info">
+                <h3>Индексация</h3>
+                
+                <InputFieldSelector @bind-BindingValue="Index.Indexator">
+                    Индексатор
+                </InputFieldSelector>
+
+                <div class="block__info">
+                    <p>URL записи об индексе</p>
+                    <input type="url" value="@Index.URL"
+                           @onchange="@(e => Index.URL = new Uri(e.Value?.ToString()!))" />
+                </div>
+                <div class="block__info">
+                    <p>Добавленные записи об индексации</p>
+                    <ul>
+                        @foreach (CitationIndexDto index in Publication.CitationIndices)
+                        {
+                            <li>
+                                @Enum.GetName(index.Indexator) @index.URL
+                                <button @onclick="() => RemoveIndex(index)">
+                                    Удалить запись об индексе
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <button class="button" @onclick="AddIndex">Добавить индекс</button>
+            </div>
+        </div>
+        <div id="content-4">
+            <div class="Info">
+                <h3>Представление на конференции</h3>
+
+                <InputField @bind-BindingValue="Conference.ShortName">Краткое название</InputField>
+                <InputField @bind-BindingValue="Conference.FullName">Полное название</InputField>
+
+                <div class="block__info">
+                    <p>Дата начала</p>
+                    <input type="date" @bind="Conference.StartDate" />
+                </div>
+                <div class="block__info">
+                    <p>Дата окончания</p>
+                    <input type="date" @bind="Conference.EndDate" />
+                </div>
+                <InputFieldSelector @bind-BindingValue="Conference.Type">
+                    Индексатор
+                </InputFieldSelector>
+
+                <InputField @bind-BindingValue="Conference.Location">Место проведения</InputField>
+                
+                <button class="button" @onclick="AddConference">Добавить конференцию</button>
+
+                @if (Publication.Conference != null)
+                {
+                    <p>@Publication.Conference.ShortName</p>
+                    <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
+                }
+            </div>
         </div>
     </div>
-    <div id="content-4">
-        <div class="ConferencInfo Info">
-            <h3>Представление на конференции</h3>
-            <div class="block__info">
-                <p>Краткое название</p>
-                <input @bind="Conference.ShortName" />
-            </div>
-            <div class="block__info">
-                <p>Полное название</p>
-                <input @bind="Conference.FullName" />
-            </div>
-            <div class="block__info">
-                <p>Дата начала</p>
-                <input type="date" @bind="Conference.StartDate" />
-            </div>
-            <div class="block__info">
-                <p>Дата окончания</p>
-                <input type="date" @bind="Conference.EndDate" />
-            </div>
-            <div class="block__info">
-                <p>Тип конференции</p>
-                <select @bind="Conference.Type">
-                    @foreach (var conferenceType in
-                    Enum.GetValues(typeof(ConferenceType)))
-                    {
-                        <option value="@conferenceType">@conferenceType</option>
-                    }
-                </select>
-            </div>
-            <div class="block__info">
-                <p>Место проведения</p>
-            </div>
-            <input @bind="Conference.Location" />
-            <br />
-            <button class="button" @onclick="AddConference">Добавить конференцию</button>
-
-            @if (Publication.Conference != null)
-            {
-                <p>@Publication.Conference.ShortName</p>
-                <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
-            }
-        </div>
-    </div>
-</div>
-
-<div class="MianContainer">
-</div>
-
-<div>
-    <button class="AddSource__Record"
-            @onclick="async () => await AddPublication()">
-        Добавить
-    </button>
+    
+    <button class="AddSource__Record" @onclick="async () => await AddPublication()">Добавить</button>
 </div>
 
 @code
@@ -236,17 +144,7 @@
         Author = new AuthorDto();
     } 
 
-    public void RemoveAuthor(AuthorDto author)
-    {
-        if (Publication.Authors.Contains(author))
-        {
-            Publication.Authors.Remove(author);
-        }
-        else
-        {
-            throw new NullReferenceException();
-        }
-    }
+    public void RemoveAuthor(AuthorDto author) => RemoveElementFromList(author, Publication.Authors);
 
     public void AddIndex()
     {
@@ -255,17 +153,7 @@
         Index = new CitationIndexDto();
     }
 
-    public void RemoveIndex(CitationIndexDto index)
-    {
-        if (Publication.CitationIndices.Contains(index))
-        {
-            Publication.CitationIndices.Remove(index);
-        }
-        else
-        {
-            throw new NullReferenceException();
-        }
-    }
+    public void RemoveIndex(CitationIndexDto index) => RemoveElementFromList(index, Publication.CitationIndices);
 
     public void AddConference()
     {
@@ -282,9 +170,21 @@
     public async Task AddPublication()
     {
         await SendPostRequestWithBodyAsync(Publication);
-        _nav.NavigateTo(PageAfterAddition);
+        Nav.NavigateTo(PageAfterAddition);
     }
 
     public async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto) 
         => await Http.PostAsJsonAsync("https://localhost:7204/api/Edit", publicationDto);
+
+    private static void RemoveElementFromList<T>(T element, ICollection<T> collection) where T : class
+    {
+        if (collection.Contains(element))
+        {
+            collection.Remove(element);
+        }
+        else
+        {
+            throw new NullReferenceException();
+        }
+    }
 }

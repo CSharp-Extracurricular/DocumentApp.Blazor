@@ -1,0 +1,40 @@
+﻿@using DocumentApp;
+@using DocumentApp.Domain;
+@using DocumentApp.DTO;
+
+
+@typeparam TType where TType : Enum
+
+<div class="block__info">
+    <p>@ChildContent</p>
+    <select class="block__info__selector" @bind="BindingValue">
+        @foreach (var publicationType in Enum.GetValues(typeof(TType)))
+        {
+            <option class="block__info__selector" value="@publicationType">@publicationType</option>
+        }
+    </select>
+</div>
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private TType _value;
+
+    [Parameter]
+    public TType BindingValue
+    {
+        get => _value;
+        set
+        {
+            if (_value.Equals(value)) return;
+            _value = value;
+            BindingValueChanged.InvokeAsync(value);
+        }
+        
+    }
+
+    [Parameter]
+    public EventCallback<TType> BindingValueChanged { get; set; }
+}
