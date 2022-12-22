@@ -404,5 +404,5 @@
         conference = publicationDto.Conference ?? null!;
     }
 
-    public async Task SendPutRequest(PublicationDto publicationDto) => await Http.PutAsJsonAsync<PublicationDto>($"https://localhost:7204/api/Edit/{publicationDto.Id.ToString()}", publicationDto);
+    public async Task SendPutRequest(PublicationDto publicationDto) => await Http.PutAsJsonAsync("https://localhost:7204/api/Edit/",publicationDto);
 }
