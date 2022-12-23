@@ -45,15 +45,21 @@
     opacity: 0;
 }
 
-#filter-toggle + label::before {
-    font-family: Icons !important;
-    content: '\e02d';
+.title__filter {
+    cursor: pointer;
 }
 
-#filter-toggle:checked + label::before {
-    font-family: Icons !important;
-    content: '\e030';
-}
+    #filter-toggle + label::before {
+        cursor: pointer;
+        font-family: Icons !important;
+        content: '\e02d';
+    }
+
+    #filter-toggle:checked + label::before {
+        cursor: pointer;
+        font-family: Icons !important;
+        content: '\e030';
+    }
 
 #filter-toggle:checked ~ #filter-container {
     display: block;
