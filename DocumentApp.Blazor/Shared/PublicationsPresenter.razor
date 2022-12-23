@@ -42,6 +42,9 @@ else if (!fulfil)
             {
                 <li>
                     <div class="list__source__block">
+                        <div class="publication-card-title">
+                            @publication.Title
+                        </div>
                         <div class="publication-card-author">
                             @foreach (Author author in publication.Authors)
                             {
@@ -54,15 +57,16 @@ else if (!fulfil)
                                 </span>
                             }
                         </div>
-                        <div class="publication-card-title">
-                            @publication.Title
-                        </div>
                         <div class="publication-card-year">
                             @publication.PublishingYear
                         </div>
                         <div class="publication-card-actions">
-                            <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
-                            <button @onclick="@(()=>Nav.NavigateTo($"/edit/{publication.Id}"))">Изменить</button>
+                            <button @onclick="async () => await DeletePublication(publication)">
+                                <span class="oi oi-trash" aria-hidden="true"></span>
+                            </button>
+                            <button @onclick="@(() => Nav.NavigateTo($"/edit/{publication.Id}"))">
+                                <span class="oi oi-pencil" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                 </li>
