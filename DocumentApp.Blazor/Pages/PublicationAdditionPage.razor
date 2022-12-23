@@ -46,20 +46,20 @@
                 <InputField @bind-BindingValue="Author.Email">E-mail</InputField>
 
                 <p class="TitleMini">Добавленные авторы</p>
-
-                <ol>
-                    @foreach (AuthorDto author in Publication.Authors)
-                    {
-                        <br/>
-                        <li>
-                            @author.LastName @author.FirstName @author.PatronimicName
-                            <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
-                                Удалить
-                            </button>
-                        </li>
-                    }
-                </ol>
-
+                <div class="block__info">
+                    <ol>
+                        @foreach (AuthorDto author in Publication.Authors)
+                        {
+                            <br/>
+                            <li>
+                                @author.LastName @author.FirstName @author.PatronimicName
+                                <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
+                                    Удалить
+                                </button>
+                            </li>
+                        }
+                    </ol>
+                </div>
                 <button class="button" @onclick="AddAuthor">Добавить автора</button>
             </div>
         </div>
