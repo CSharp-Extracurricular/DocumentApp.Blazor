@@ -8,22 +8,33 @@
 @inject NavigationManager Nav
 
 <div class="title__filter">Фильтр</div>
-
-<div class="filter">
-    Начальный год:
-    <input type="text" @bind="startYear" />
-    Конечный год: 
-    <input type="text" @bind="endYear" />
-    Тип публикации: 
-    <select @bind="publicationType">
-        <option value="" @onclick="() => publicationType = null">All</option>
-        @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
-        {
-                    <option value="@_publicationType">@_publicationType</option>
-        }
-    </select>
-    <button @onclick="@SearchIssues">Поиск</button>
+<div class="filter block__info">
+    <div class="filter-field">
+        <p>Начальный год</p>
+        <input type="text" @bind="startYear"/></div>
+    <div class="filter-field">
+        <p>Конечный год</p>
+        <input type="text" @bind="endYear"/></div>
+    <div class="filter-field">
+        <p>Тип публикации</p>
+        <select class="block__info__selector" @bind="publicationType">
+            <option value="" @onclick="() => publicationType = null">All</option>
+            @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+            {
+                <option value="@_publicationType">@_publicationType</option>
+            }
+        </select></div>
+    <div class="filter-field">
+        <button @onclick="SearchIssues">
+            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+        </button>
+        <button>
+            <span class="oi oi-x" aria-hidden="true"></span>
+        </button>
+    </div>
 </div>
+
+<hr/>
 
 @if (fulfil && !_publications.Any())
 {
@@ -117,12 +128,6 @@ else if (!fulfil)
         }
     }
 
-    public string GetQueryString(int? start, int? end, PublicationType? type)
-    {
-        StringBuilder queryUri = new("https://localhost:7204/api/View/filter?", QueryStringMaxLength);
-
-        queryUri.Append($"StartYear={start}&EndYear={end}&PublicationType={(int?) publicationType}");
-
-        return queryUri.ToString();
-    }
+    public string GetQueryString(int? start, int? end, PublicationType? type) 
+        => $"https://localhost:7204/api/View/filter?StartYear={start}&EndYear={end}&PublicationType={(int?)publicationType}";
 }
