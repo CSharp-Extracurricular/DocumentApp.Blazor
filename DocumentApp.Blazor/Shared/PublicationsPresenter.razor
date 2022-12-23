@@ -8,7 +8,7 @@
 @inject NavigationManager Nav
 
 <div class="title__filter">Фильтр</div>
-<div class="filter block__info">
+<div class="filter-container block__info">
     <div class="filter-field">
         <p>Начальный год</p>
         <input type="text" @bind="startYear"/></div>
@@ -23,12 +23,13 @@
             {
                 <option value="@_publicationType">@_publicationType</option>
             }
-        </select></div>
+        </select>
+    </div>
     <div class="filter-field">
-        <button @onclick="SearchIssues">
+        <button class="filter-button" @onclick="SearchIssues">
             <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
         </button>
-        <button>
+        <button class="filter-button" @onclick="ClearSearch">
             <span class="oi oi-x" aria-hidden="true"></span>
         </button>
     </div>
@@ -48,11 +49,11 @@ else if (!fulfil)
 @if (_publications.Any())
 {
     <div class="publication-cards-main-column">
-        <ul class="list__source__list">
+        <ul class="publication-cards-container">
             @foreach (var publication in _publications)
             {
                 <li>
-                    <div class="list__source__block">
+                    <div class="publication-card">
                         <div class="publication-card-title">
                             @publication.Title
                         </div>
@@ -83,7 +84,7 @@ else if (!fulfil)
                 </li>
             }
         </ul>
-        <button class="AddSource__Record" @onclick="@(()=>Nav.NavigateTo("/add"))">Добавить публикацию</button>
+        <button class="add-publication-button" @onclick="@(()=>Nav.NavigateTo("/add"))">Добавить публикацию</button>
     </div>
 }
 
@@ -128,6 +129,12 @@ else if (!fulfil)
         }
     }
 
+    public async Task ClearSearch()
+    {
+        _publications.Clear();
+        await OnInitializedAsync();
+    }
+
     public string GetQueryString(int? start, int? end, PublicationType? type) 
-        => $"https://localhost:7204/api/View/filter?StartYear={start}&EndYear={end}&PublicationType={(int?)publicationType}";
+        => $"https://localhost:7204/api/View/filter-container?StartYear={start}&EndYear={end}&PublicationType={(int?)publicationType}";
 }

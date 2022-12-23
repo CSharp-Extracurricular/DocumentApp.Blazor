@@ -4,11 +4,7 @@
 @inject NavigationManager Nav
 
 <PageTitle>Редактирование публикации</PageTitle>
-
-
-<div class="Block_C">
-    <h2 class="list__source__title">Редактирование публикации</h2>
-</div>
+<PageHeader>Редактирование публикации</PageHeader>
 
 <div class="main-container">
     <div class="tabs">
@@ -126,7 +122,7 @@
         </div>
     </div>
     
-    <button class="AddSource__Record" @onclick="async () => await AddPublication()">Сохранить изменения</button>
+    <button class="add-publication-button" @onclick="async () => await AddPublication()">Сохранить изменения</button>
 </div>
 
 @code
