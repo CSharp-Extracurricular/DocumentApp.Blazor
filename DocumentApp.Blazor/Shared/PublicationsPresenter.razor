@@ -7,8 +7,10 @@
 @using DocumentApp.Domain
 @inject NavigationManager Nav
 
-<div class="title__filter">Фильтр</div>
-<div class="filter-container block__info">
+<input type="checkbox" name="filter-toggle" id="filter-toggle" value="">
+<label class="title__filter" for="filter-toggle"> Фильтр </label>
+
+<div id="filter-container" class="block__info">
     <div class="filter-field">
         <p>Начальный год</p>
         <input type="text" @bind="startYear"/></div>
@@ -26,10 +28,10 @@
         </select>
     </div>
     <div class="filter-field">
-        <button class="filter-button" @onclick="SearchIssues">
+        <button class="filter-button" @onclick="@SearchIssues">
             <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
         </button>
-        <button class="filter-button" @onclick="ClearSearch">
+        <button class="filter-button" @onclick="@ClearSearch">
             <span class="oi oi-x" aria-hidden="true"></span>
         </button>
     </div>
@@ -115,7 +117,7 @@ else if (!fulfil)
 
     private int? startYear = null;
     private int? endYear = null;
-    private PublicationType? publicationType;
+    private PublicationType? publicationType = null;
 
     public async Task SearchIssues()
     {
@@ -136,5 +138,5 @@ else if (!fulfil)
     }
 
     public string GetQueryString(int? start, int? end, PublicationType? type) 
-        => $"https://localhost:7204/api/View/filter-container?StartYear={start}&EndYear={end}&PublicationType={(int?)publicationType}";
+        => $"https://localhost:7204/api/View/filter?StartYear={start}&EndYear={end}&PublicationType={(int?)publicationType}";
 }

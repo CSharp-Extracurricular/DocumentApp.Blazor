@@ -32,23 +32,6 @@ h3 {
     height: 100%;
 }
 
-/* filter-container */
-
-.title__filter {
-    font-size: 110%;
-    margin-right: 20px; 
-}
-
-.filter-container {
-    display: flex;
-    margin: 0 20px;
-    margin-bottom: 20px;
-}
-
-.filter-field {
-    margin-right: 5px;
-}
-
 /* list__source */
 
 li {
