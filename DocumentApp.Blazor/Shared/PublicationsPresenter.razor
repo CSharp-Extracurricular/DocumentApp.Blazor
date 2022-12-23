@@ -1,72 +1,82 @@
 ﻿@using System.Net.Http
 @inject HttpClient Http
 @using System.Net.Http.Json
+@using System.Text
 @using System.Threading.Tasks
 @using DocumentApp.DTO
 @using DocumentApp.Domain
-@inject NavigationManager _nav
+@inject NavigationManager Nav
+
+<div class="title__filter">Фильтр</div>
 
 <div class="filter">
-    <div class="title__filter">Фильтр:</div>
     Начальный год:
-    <input type="text" @bind="@startYear" />
+    <input type="text" @bind="startYear" />
     Конечный год: 
-    <input type="text" @bind="@endYear" />
+    <input type="text" @bind="endYear" />
     Тип публикации: 
     <select @bind="publicationType">
-        <option>All</option>
+        <option value="" @onclick="() => publicationType = null">All</option>
         @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
         {
                     <option value="@_publicationType">@_publicationType</option>
         }
-        </select>
-    <input type="button" button class="AddSource__Search" value="Поиск" @onclick="@SearchIssues" />
+    </select>
+    <button @onclick="@SearchIssues">Поиск</button>
 </div>
 
-@if (fulfil && _publications.Count() == 0)
+@if (fulfil && !_publications.Any())
 {
     <p>Публикации отсутствуют.</p>
 }
-else if (!fulfil && _publications == null)
+else if (!fulfil)
 {
     <p>Идет загрузка...</p>
 }
 
-@if (_publications != null)
+@if (_publications.Any())
 {
-    <ol>
-        @foreach (var publication in _publications)
-        {
-            <li>
-                <div class="list__source__block">
-                    <div>
-                        @foreach (Author author in publication.Authors)
-                        {
-                            <span>
-                                @(author.LastName) @(author.FirstName) @(author.PatronimicName)
-                                @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
-                                {
-                                    <span>, </span>
-                                }
-                            </span>
-                        }
+    <div class="publication-cards-main-column">
+        <ul class="list__source__list">
+            @foreach (var publication in _publications)
+            {
+                <li>
+                    <div class="list__source__block">
+                        <div class="publication-card-author">
+                            @foreach (Author author in publication.Authors)
+                            {
+                                <span>
+                                    @(author.LastName) @(author.FirstName) @(author.PatronimicName)
+                                    @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
+                                    {
+                                        <span>, </span>
+                                    }
+                                </span>
+                            }
+                        </div>
+                        <div class="publication-card-title">
+                            @publication.Title
+                        </div>
+                        <div class="publication-card-year">
+                            @publication.PublishingYear
+                        </div>
+                        <div class="publication-card-actions">
+                            <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
+                            <button @onclick="@(()=>Nav.NavigateTo($"/edit/{publication.Id}"))">Изменить</button>
+                        </div>
                     </div>
-                    <div>
-                        <b>@publication.Title</b>
-                    </div>
-                    <div>
-                        @publication.PublishingYear
-                    </div>
-                </div>
-                <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
-                <button @onclick="@(()=>_nav.NavigateTo($"/edit/{publication.Id}"))">Изменить</button>
-            </li>
-        }
-    </ol>
+                </li>
+            }
+        </ul>
+        <button class="AddSource__Record" @onclick="@(()=>Nav.NavigateTo("/add"))">Добавить публикацию</button>
+    </div>
 }
 
-@code {
-    private List<Publication> _publications = new List<Publication>();
+@code
+{
+    private const int QueryStringMaxLength = 88;
+
+    private List<Publication> _publications = new();
     private bool fulfil = false;
 
     protected override async Task OnInitializedAsync()
@@ -79,7 +89,6 @@ else if (!fulfil && _publications == null)
         }
 
         fulfil = true;
-        return;
     }
 
     public async Task DeletePublication(Publication publication)
@@ -90,13 +99,12 @@ else if (!fulfil && _publications == null)
 
     private int? startYear = null;
     private int? endYear = null;
-    private PublicationType? publicationType = null;
-    string query = string.Empty;
+    private PublicationType? publicationType;
 
     public async Task SearchIssues()
     {
         _publications.Clear();
-        query = GetQueryString(startYear, endYear, publicationType);
+        string query = GetQueryString(startYear, endYear, publicationType);
         IEnumerable<PublicationDto> result = await Http.GetFromJsonAsync<IEnumerable<PublicationDto>>(query) ?? null!;
 
         foreach (PublicationDto publicationDto in result)
@@ -107,34 +115,10 @@ else if (!fulfil && _publications == null)
 
     public string GetQueryString(int? start, int? end, PublicationType? type)
     {
-        // https://localhost:7204/api/View/filter?StartYear=2003&EndYear=2022&PublicationType=0
-        string query = "https://localhost:7204/api/View/filter?";
+        StringBuilder queryUri = new("https://localhost:7204/api/View/filter?", QueryStringMaxLength);
 
-        if (start != null)
-        {
-            query += $"StartYear={start}";
-        }
+        queryUri.Append($"StartYear={start}&EndYear={end}&PublicationType={(int?) publicationType}");
 
-        if (end != null)
-        {
-            if (start != null)
-            {
-                query += "&";
-            }
-
-            query += $"EndYear={end}";
-        }
-
-        if (type != null)
-        {
-            if (start != null || end != null)
-            {
-                query += "&";
-            }
-
-            query += $"&PublicationType={(int?) publicationType}";
-        }
-
-        return query;
+        return queryUri.ToString();
     }
 }
