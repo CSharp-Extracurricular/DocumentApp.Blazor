@@ -3,20 +3,20 @@
 <div class="publication-card">
     Полная информация:
     
-    <p>Название: @publication.Title</p>
-    <p>Год публикации: @publication.PublishingYear</p>
-    <p>Тип: @publication.PublicationType</p>
+    <p>Название: @_publication.Title</p>
+    <p>Год публикации: @_publication.PublishingYear</p>
+    <p>Тип: @_publication.PublicationType</p>
     
     Авторы:
     
-    @foreach (AuthorDto author in publication.Authors)
+    @foreach (AuthorDto author in _publication.Authors)
     {
         <p>@author.LastName @author.FirstName @author.PatronimicName (@author.Email)</p>
     }
     
     Индексация:
 
-    @foreach (CitationIndexDto index in publication.CitationIndices)
+    @foreach (CitationIndexDto index in _publication.CitationIndices)
     {
         <p>Индексатор: @index.Indexator</p>
         <p>URL: @index.URL</p>
@@ -24,19 +24,18 @@
     
     Представление на конференции:
     
-    @if (publication.Conference != null)
+    @if (_publication.Conference != null)
     {
-        <p>Краткое название: @publication.Conference.ShortName</p>
-        <p>Полное название: @publication.Conference.FullName</p>
-        <p>Место проведения: @publication.Conference.Location</p>
-        <p>Даты проведения: @publication.Conference.StartDate.ToString("d")—@publication.Conference.EndDate.ToString("d")</p>
-        <p>Тип: @publication.Conference.Type</p>
+        <p>Краткое название: @_publication.Conference.ShortName</p>
+        <p>Полное название: @_publication.Conference.FullName</p>
+        <p>Место проведения: @_publication.Conference.Location</p>
+        <p>Даты проведения: @_publication.Conference.StartDate.ToString("d")—@_publication.Conference.EndDate.ToString("d")</p>
+        <p>Тип: @_publication.Conference.Type</p>
     }
-
 </div>
 
 @code {
-    PublicationDto publication = new();
+    PublicationDto _publication = new();
 
     [Parameter] 
     public Guid PublicationId { get; set; }
@@ -48,6 +47,6 @@
 
     private async Task LoadPublication()
     {
-        publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{PublicationId.ToString()}") ?? null!;
+        _publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{PublicationId.ToString()}") ?? null!;
     }
 }
