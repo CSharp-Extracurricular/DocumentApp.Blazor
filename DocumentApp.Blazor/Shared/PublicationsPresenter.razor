@@ -50,43 +50,57 @@ else if (!fulfil)
 
 @if (_publications.Any())
 {
-    <div class="publication-cards-main-column">
-        <ul class="publication-cards-container">
-            @foreach (var publication in _publications)
-            {
-                <li>
-                    <div class="publication-card">
-                        <div class="publication-card-title">
-                            @publication.Title
+    <div class="main-wrap">
+        <div class="publication-cards-main-column">
+            <ul class="publication-cards-container">
+                @foreach (var publication in _publications)
+                {
+                    <li>
+                        <div class="publication-card">
+                            <div class="publication-card-title">
+                                @publication.Title
+                            </div>
+                            <div class="publication-card-author">
+                                @foreach (Author author in publication.Authors)
+                                {
+                                    <span>
+                                        @(author.LastName) @(author.FirstName) @(author.PatronimicName)
+                                        @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
+                                        {
+                                            <span>, </span>
+                                        }
+                                    </span>
+                                }
+                            </div>
+                            <div class="publication-card-year">
+                                @publication.PublishingYear
+                            </div>
+                            <div class="publication-card-actions">
+                                <button @onclick="async () => await DeletePublication(publication)">
+                                    <span class="oi oi-trash" aria-hidden="true"></span>
+                                </button>
+                                <button @onclick="@(() => Nav.NavigateTo($"/edit/{publication.Id}"))">
+                                    <span class="oi oi-pencil" aria-hidden="true"></span>
+                                </button>
+                                <button @onclick="() => ShowPublication(publication)">
+                                    <span class="oi oi-eye" aria-hidden="true"></span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="publication-card-author">
-                            @foreach (Author author in publication.Authors)
-                            {
-                                <span>
-                                    @(author.LastName) @(author.FirstName) @(author.PatronimicName)
-                                    @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
-                                    {
-                                        <span>, </span>
-                                    }
-                                </span>
-                            }
-                        </div>
-                        <div class="publication-card-year">
-                            @publication.PublishingYear
-                        </div>
-                        <div class="publication-card-actions">
-                            <button @onclick="async () => await DeletePublication(publication)">
-                                <span class="oi oi-trash" aria-hidden="true"></span>
-                            </button>
-                            <button @onclick="@(() => Nav.NavigateTo($"/edit/{publication.Id}"))">
-                                <span class="oi oi-pencil" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-            }
-        </ul>
-        <button class="add-publication-button" @onclick="@(()=>Nav.NavigateTo("/add"))">Добавить публикацию</button>
+                    </li>
+                }
+            </ul>
+            <button class="add-publication-button" @onclick="@(()=>Nav.NavigateTo("/add"))">Добавить публикацию</button>
+        </div>
+        @if (isPreviewShown)
+        {
+            <div class="publication-cards-preview-wrap">
+                <PublicationPreview PublicationId="previewGuid" />
+                <button class="publication-close-preview-button" @onclick="ClosePreview">
+                    <span class="oi oi-x" aria-hidden="true"></span>
+                </button>
+            </div>
+        }
     </div>
 }
 
@@ -96,6 +110,19 @@ else if (!fulfil)
 
     private List<Publication> _publications = new();
     private bool fulfil = false;
+    private bool isPreviewShown = false;
+    private Guid previewGuid;
+
+    private void ShowPublication(Publication publication)
+    {
+        previewGuid = publication.Id;
+        isPreviewShown = true;
+    }
+
+    private void ClosePreview()
+    {
+        isPreviewShown = false;
+    }
 
     protected override async Task OnInitializedAsync()
     {

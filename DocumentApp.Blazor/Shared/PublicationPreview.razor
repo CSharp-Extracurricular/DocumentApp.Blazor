@@ -1,0 +1,53 @@
+﻿@inject HttpClient Http
+
+<div class="publication-card">
+    Полная информация:
+    
+    <p>Название: @publication.Title</p>
+    <p>Год публикации: @publication.PublishingYear</p>
+    <p>Тип: @publication.PublicationType</p>
+    
+    Авторы:
+    
+    @foreach (AuthorDto author in publication.Authors)
+    {
+        <p>@author.LastName @author.FirstName @author.PatronimicName (@author.Email)</p>
+    }
+    
+    Индексация:
+
+    @foreach (CitationIndexDto index in publication.CitationIndices)
+    {
+        <p>Индексатор: @index.Indexator</p>
+        <p>URL: @index.URL</p>
+    }
+    
+    Представление на конференции:
+    
+    @if (publication.Conference != null)
+    {
+        <p>Краткое название: @publication.Conference.ShortName</p>
+        <p>Полное название: @publication.Conference.FullName</p>
+        <p>Место проведения: @publication.Conference.Location</p>
+        <p>Даты проведения: @publication.Conference.StartDate.ToString("d")—@publication.Conference.EndDate.ToString("d")</p>
+        <p>Тип: @publication.Conference.Type</p>
+    }
+
+</div>
+
+@code {
+    PublicationDto publication = new();
+
+    [Parameter] 
+    public Guid PublicationId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPublication();
+    }
+
+    private async Task LoadPublication()
+    {
+        publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{PublicationId.ToString()}") ?? null!;
+    }
+}
