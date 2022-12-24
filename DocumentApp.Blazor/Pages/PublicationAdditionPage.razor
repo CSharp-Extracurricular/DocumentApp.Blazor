@@ -136,6 +136,7 @@
 
     public void AddAuthor()
     {
+        Author.Number = Publication.Authors.Count;
         Author.PublicationId = Publication.Id;
         Publication.Authors.Add(Author);
         Author = new AuthorDto();
