@@ -7,7 +7,7 @@
 @using DocumentApp.Domain
 @inject NavigationManager Nav
 
-<input type="checkbox" name="filter-toggle" id="filter-toggle" value="">
+<input type="checkbox" name="filter-toggle" id="filter-toggle" value="" @bind="isFilterMenuShown">
 <label class="title__filter" for="filter-toggle"> Фильтр </label>
 
 <div id="filter-container" class="block__info">
@@ -110,8 +110,11 @@ else if (!fulfil)
 
     private List<Publication> _publications = new();
     private bool fulfil = false;
+
     private bool isPreviewShown = false;
     private Guid previewGuid;
+
+    private bool isFilterMenuShown = false;
 
     private void ShowPublication(Publication publication)
     {

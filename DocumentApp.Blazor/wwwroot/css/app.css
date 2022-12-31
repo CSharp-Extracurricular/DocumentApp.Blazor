@@ -1,12 +1,17 @@
 @import url('Defaults.css');
 @import url('PublicationCard.css');
 @import url('Filter.css');
+@import url('Colors.css');
 
 /*Utilities.*/
 
+.sidebar {
+    background-color: var(--accent-color);
+}
+
 * {
     margin: 0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Roboto;
 }
 
 .publication-cards-main-column {
@@ -79,25 +84,24 @@ li {
 }
 
 .add-publication-button {
-    text-decoration: none;
+    font-family: Roboto;
+    font-weight: bold;
     text-align: center;
-    background-color: #062666;
+    background-color: var(--accent-color);
+    border: 0;
     color: white;
-    border: 1px solid transparent;
-    padding: 2px 8px;
+    padding: 10px;
     font-size: 16px;
-    line-height: 1.5;
-    border-radius: 4px;
-    margin-left: 6px;
+    border-radius: 10px;
     cursor: pointer;
-    margin-bottom: 10px;
-    width: 100%;
-    margin: 20px 20px 0 0;
-    background: #062666;
+    width: 90%;
+    margin: 10px;
+    transition: all 0.1s ease-in;
 }
 
     .add-publication-button:hover {
-        background-color: #424242;
+        transform: scale(1.05);
+        transition: all 0.1s ease-in;
     }
 
 a {

@@ -133,7 +133,7 @@
     public AuthorDto Author = new();
     public CitationIndexDto Index = new();
     public ConferenceDto Conference = new() { StartDate = DateTime.Now, EndDate = DateTime.Now };
-
+    
     public void AddAuthor()
     {
         Author.Number = Publication.Authors.Count;
