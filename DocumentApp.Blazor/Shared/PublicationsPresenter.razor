@@ -7,7 +7,7 @@
 @using DocumentApp.Domain
 @inject NavigationManager Nav
 
-<input type="checkbox" name="filter-toggle" id="filter-toggle" value="" @bind="isFilterMenuShown">
+<input type="checkbox" name="filter-toggle" id="filter-toggle" value="">
 <label class="title__filter" for="filter-toggle"> Фильтр </label>
 
 <div id="filter-container" class="block__info">
@@ -60,7 +60,7 @@ else if (!fulfil)
                             <div class="publication-card-title">
                                 @publication.Title
                             </div>
-                            <div class="publication-card-author">
+                            <div>
                                 @foreach (Author author in publication.Authors)
                                 {
                                     <span>
@@ -72,7 +72,7 @@ else if (!fulfil)
                                     </span>
                                 }
                             </div>
-                            <div class="publication-card-year">
+                            <div>
                                 @publication.PublishingYear
                             </div>
                             <div class="publication-card-actions">
@@ -113,8 +113,6 @@ else if (!fulfil)
 
     private bool isPreviewShown = false;
     private Guid previewGuid;
-
-    private bool isFilterMenuShown = false;
 
     private void ShowPublication(Publication publication)
     {

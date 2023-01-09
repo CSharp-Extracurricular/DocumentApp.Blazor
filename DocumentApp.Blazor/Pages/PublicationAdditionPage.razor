@@ -6,7 +6,7 @@
 <PageTitle>Добавление публикации</PageTitle>
 <PageHeader>Добавление публикации</PageHeader>
 
-<div class="main-container">
+<div class="main-container-centered">
     <div class="tabs">
         <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
         <label for="tab-btn-1">Основная информация</label>
@@ -42,8 +42,8 @@
                 <InputField @bind-BindingValue="Author.PatronimicName">Отчество</InputField>
                 <InputField @bind-BindingValue="Author.Email">E-mail</InputField>
 
-                <p class="TitleMini">Добавленные авторы</p>
                 <div class="block__info">
+                    <p>Добавленные авторы</p>
                     <ol>
                         @foreach (AuthorDto author in Publication.Authors)
                         {
@@ -121,7 +121,6 @@
             </div>
         </div>
     </div>
-    
     <button class="add-publication-button" @onclick="async () => await AddPublication()">Добавить</button>
 </div>
 

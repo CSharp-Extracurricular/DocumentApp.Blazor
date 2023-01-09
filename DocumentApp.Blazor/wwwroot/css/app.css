@@ -118,6 +118,17 @@ a {
     flex-wrap: wrap;
 }
 
+.main-container-centered {
+    display: inline-block;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.main-container-centered button {
+    width: 40%;
+}
+
 .Info {
     width: 50%;
 }
