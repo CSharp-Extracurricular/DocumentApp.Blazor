@@ -6,7 +6,7 @@
 <PageTitle>Добавление публикации</PageTitle>
 <PageHeader>Добавление публикации</PageHeader>
 
-<div class="main-container-centered">
+<div class="main-container">
     <div class="tabs">
         <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
         <label for="tab-btn-1">Основная информация</label>
@@ -21,14 +21,14 @@
             <div class="Info">
                 <h3 class="addition-page-tab-header">Основная информация</h3>
 
-                <InputField @bind-BindingValue="Publication.Title">Название</InputField>
+                <InputField @bind-BindingValue="_publication.Title">Название</InputField>
 
                 <div class="block__info">
                     <p>Год публикации</p>
-                    <input maxlength="4" type="number" @bind="Publication.PublishingYear"/>
+                    <input maxlength="4" type="number" @bind="_publication.PublishingYear"/>
                 </div>
                 
-                <InputFieldSelector @bind-BindingValue="Publication.PublicationType">
+                <InputFieldSelector @bind-BindingValue="_publication.PublicationType">
                     Тип публикации
                 </InputFieldSelector>
             </div>
@@ -37,15 +37,15 @@
             <div class="Info">
                 <h3>Авторы</h3>
 
-                <InputField @bind-BindingValue="Author.LastName">Фамилия</InputField>
-                <InputField @bind-BindingValue="Author.FirstName">Имя</InputField>
-                <InputField @bind-BindingValue="Author.PatronimicName">Отчество</InputField>
-                <InputField @bind-BindingValue="Author.Email">E-mail</InputField>
+                <InputField @bind-BindingValue="_author.LastName">Фамилия</InputField>
+                <InputField @bind-BindingValue="_author.FirstName">Имя</InputField>
+                <InputField @bind-BindingValue="_author.PatronimicName">Отчество</InputField>
+                <InputField @bind-BindingValue="_author.Email">E-mail</InputField>
 
                 <div class="block__info">
                     <p>Добавленные авторы</p>
                     <ol>
-                        @foreach (AuthorDto author in Publication.Authors)
+                        @foreach (AuthorDto author in _publication.Authors)
                         {
                             <br/>
                             <li>
@@ -64,19 +64,19 @@
             <div class="Info">
                 <h3>Индексация</h3>
                 
-                <InputFieldSelector @bind-BindingValue="Index.Indexator">
+                <InputFieldSelector @bind-BindingValue="_index.Indexator">
                     Индексатор
                 </InputFieldSelector>
 
                 <div class="block__info">
                     <p>URL записи об индексе</p>
-                    <input type="url" value="@Index.URL"
-                           @onchange="@(e => Index.URL = new Uri(e.Value?.ToString()!))" />
+                    <input type="url" value="@_index.URL"
+                           @onchange="@(e => _index.URL = new Uri(e.Value?.ToString()!))" />
                 </div>
                 <div class="block__info">
                     <p>Добавленные записи об индексации</p>
                     <ul>
-                        @foreach (CitationIndexDto index in Publication.CitationIndices)
+                        @foreach (CitationIndexDto index in _publication.CitationIndices)
                         {
                             <li>
                                 @Enum.GetName(index.Indexator) @index.URL
@@ -94,28 +94,28 @@
             <div class="Info">
                 <h3>Представление на конференции</h3>
 
-                <InputField @bind-BindingValue="Conference.ShortName">Краткое название</InputField>
-                <InputField @bind-BindingValue="Conference.FullName">Полное название</InputField>
+                <InputField @bind-BindingValue="_conference.ShortName">Краткое название</InputField>
+                <InputField @bind-BindingValue="_conference.FullName">Полное название</InputField>
 
                 <div class="block__info">
                     <p>Дата начала</p>
-                    <input type="date" @bind="Conference.StartDate" />
+                    <input type="date" @bind="_conference.StartDate" />
                 </div>
                 <div class="block__info">
                     <p>Дата окончания</p>
-                    <input type="date" @bind="Conference.EndDate" />
+                    <input type="date" @bind="_conference.EndDate" />
                 </div>
-                <InputFieldSelector @bind-BindingValue="Conference.Type">
+                <InputFieldSelector @bind-BindingValue="_conference.Type">
                     Индексатор
                 </InputFieldSelector>
 
-                <InputField @bind-BindingValue="Conference.Location">Место проведения</InputField>
+                <InputField @bind-BindingValue="_conference.Location">Место проведения</InputField>
                 
                 <button class="button" @onclick="AddConference">Добавить конференцию</button>
 
-                @if (Publication.Conference != null)
+                @if (_publication.Conference != null)
                 {
-                    <p>@Publication.Conference.ShortName</p>
+                    <p>@_publication.Conference.ShortName</p>
                     <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
                 }
             </div>
@@ -127,51 +127,67 @@
 @code
 {
     private const string PageAfterAddition = "";
+    private const string PostEndpointUrl = "https://localhost:7204/api/Edit";
 
-    public PublicationDto Publication = new() { PublishingYear = 2022 };
-    public AuthorDto Author = new();
-    public CitationIndexDto Index = new();
-    public ConferenceDto Conference = new() { StartDate = DateTime.Now, EndDate = DateTime.Now };
-    
-    public void AddAuthor()
+    private readonly PublicationDto _publication = new()
     {
-        Author.Number = Publication.Authors.Count;
-        Author.PublicationId = Publication.Id;
-        Publication.Authors.Add(Author);
-        Author = new AuthorDto();
+        PublishingYear = 2022
+    };
+
+    private AuthorDto _author = new();
+
+    private CitationIndexDto _index = new();
+
+    private ConferenceDto _conference = new()
+    {
+        StartDate = DateTime.Now, 
+        EndDate = DateTime.Now
+    };
+    
+    private void AddAuthor()
+    {
+        _author.Number = _publication.Authors.Count;
+        _author.PublicationId = _publication.Id;
+        _publication.Authors.Add(_author);
+        _author = new AuthorDto();
     } 
 
-    public void RemoveAuthor(AuthorDto author) => RemoveElementFromList(author, Publication.Authors);
+    private void RemoveAuthor(AuthorDto author) => RemoveElementFromList(author, _publication.Authors);
 
-    public void AddIndex()
+    private void AddIndex()
     {
-        Index.PublicationId = Publication.Id;
-        Publication.CitationIndices.Add(Index);
-        Index = new CitationIndexDto();
+        _index.PublicationId = _publication.Id;
+        _publication.CitationIndices.Add(_index);
+        _index = new CitationIndexDto();
     }
 
-    public void RemoveIndex(CitationIndexDto index) => RemoveElementFromList(index, Publication.CitationIndices);
+    private void RemoveIndex(CitationIndexDto index) => RemoveElementFromList(index, _publication.CitationIndices);
 
-    public void AddConference()
+    private void AddConference()
     {
-        Conference.PublicationId = Publication.Id;
-        Publication.Conference = Conference;
+        _conference.PublicationId = _publication.Id;
+        _publication.Conference = _conference;
     }
 
-    public void RemoveConference()
+    private void RemoveConference()
     {
-        Publication.Conference = null;
-        Conference = new ConferenceDto{ StartDate = DateTime.Now, EndDate = DateTime.Now };
+        _publication.Conference = null;
+        _conference = new ConferenceDto
+        {
+            StartDate = DateTime.Now, 
+            EndDate = DateTime.Now 
+
+        };
     }
 
-    public async Task AddPublication()
+    private async Task AddPublication()
     {
-        await SendPostRequestWithBodyAsync(Publication);
+        await SendPostRequestWithBodyAsync(_publication);
         Nav.NavigateTo(PageAfterAddition);
     }
 
-    public async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto) 
-        => await Http.PostAsJsonAsync("https://localhost:7204/api/Edit", publicationDto);
+    private async Task SendPostRequestWithBodyAsync(PublicationDto publicationDto)
+        => await Http.PostAsJsonAsync(PostEndpointUrl, publicationDto);
 
     private static void RemoveElementFromList<T>(T element, ICollection<T> collection) where T : class
     {

@@ -114,18 +114,13 @@ a {
 }
 
 .main-container {
-    display: flex;
+    display: block;
     flex-wrap: wrap;
+    width: 50%;
 }
 
-.main-container-centered {
-    display: inline-block;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-}
-
-.main-container-centered button {
+.main-container button {
+    display: block;
     width: 40%;
 }
 
