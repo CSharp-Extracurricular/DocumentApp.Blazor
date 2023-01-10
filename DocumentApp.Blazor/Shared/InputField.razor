@@ -1,0 +1,26 @@
+﻿<div class="block__info">
+    <p>@ChildContent</p>
+    <input @bind-value="@BindingValue"/>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private string _value;
+
+    [Parameter]
+    public string BindingValue
+    {
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+            BindingValueChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> BindingValueChanged { get; set; }   
+}

@@ -1,386 +1,37 @@
-﻿@using System.Net.Http
-@inject HttpClient Http
-@using System.Net.Http.Json
-@using System.Threading.Tasks
-@using DocumentApp.DTO
-@using DocumentApp.Domain
-@inject NavigationManager _nav
+﻿@page "/edit/{currentPublicationIdString}"
 
-@page "/edit/{currentPublicationIdString}"
+@inject HttpClient Http
+@inject NavigationManager Nav
 
 <PageTitle>Редактирование публикации</PageTitle>
+<PageHeader>Редактирование публикации</PageHeader>
 
-<div class="Block_C">
-    <h2 class="list__source__title">Редактирование публикации</h2>
-</div>
-
-
-<style>
-    .tabs {
-        font-size: 0;
-    }
-
-        .tabs > input[type="radio"] {
-            display: none;
-        }
-
-        .tabs > div {
-            /* скрыть контент по умолчанию */
-            display: none;
-            border: 1px solid #e0e0e0;
-            padding: 10px 15px;
-            font-size: 16px;
-        }
-
-    /* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
-    #tab-btn-1:checked ~ #content-1,
-    #tab-btn-2:checked ~ #content-2,
-    #tab-btn-3:checked ~ #content-3,
-    #tab-btn-4:checked ~ #content-4 {
-        display: block;
-    }
-
-    .tabs > label {
-        display: inline-block;
-        text-align: center;
-        vertical-align: middle;
-        user-select: none;
-        background-color: #f5f5f5;
-        border: 1px solid #e0e0e0;
-        padding: 2px 8px;
-        font-size: 16px;
-        line-height: 1.5;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-        cursor: pointer;
-        position: relative;
-        top: 1px;
-    }
-
-        .tabs > label:not(:first-of-type) {
-            border-left: none;
-        }
-
-    .tabs > input[type="radio"]:checked + label {
-        background-color: #fff;
-        border-bottom: 1px solid #fff;
-    }
-</style>
-
-<div class="tabs">
-    <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
-    <label for="tab-btn-1">Основная информация</label>
-    <input type="radio" name="tab-btn" id="tab-btn-2" value="">
-    <label for="tab-btn-2">Авторы</label>
-    <input type="radio" name="tab-btn" id="tab-btn-3" value="">
-    <label for="tab-btn-3">Индексация</label>
-    <input type="radio" name="tab-btn" id="tab-btn-4" value="">
-    <label for="tab-btn-4">Конференция</label>
-
-    <div id="content-1">
-        <div class="MainInfo Info">
-            <h3>Основная информация</h3>
-
-            <div class="block__info">
-                <p>Название</p>
-                <input class="TitleInput__NameInfo" @bind="title" />
-            </div>
-            <div class="block__info">
-                <p>Год публикации</p>
-                <input maxlength="4" type="number" @bind="publishingYear" />
-            </div>
-
-            <div class="block__info">
-                <p>Тип публикации</p>
-                <select @bind="publicationType">
-                    @foreach (var _publicationType in
-                    Enum.GetValues(typeof(PublicationType)))
-                    {
-                        <option value="@_publicationType">@_publicationType</option>
-                    }
-                </select>
-            </div>
-        </div>
-    </div>
-    <div id="content-2">
-        <div class="AutorInfo Info">
-            <h3>Авторы</h3>
-            <div class="block__info">
-                <p>Фамилия</p>
-                <input @bind="currentLastName" />
-            </div>
-            <div class="block__info">
-                <p>Имя</p>
-                <input @bind="currentFirstName" />
-            </div>
-            <div class="block__info">
-                <p>Отчество</p>
-                <input @bind="currentPatronimicName" />
-            </div>
-            <div class="block__info">
-                <p>E-mail</p>
-                <input @bind="currentEmail" />
-            </div>
-            <p class="TitleMini">Добавленные авторы</p>
-
-            <ol>
-                @foreach (AuthorDto author in authors)
-                {
-                    <li>
-                        @author.LastName @author.FirstName @author.PatronimicName
-                        <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
-                            Х
-                        </button>
-                    </li>
-                }
-            </ol>
-
-            <button class="button" @onclick="AddAuthor">Изменить автора</button>
-        </div>
-    </div>
-    <div id="content-3">
-        <div class="IndexInfo Info">
-            <h3>Индексация</h3>
-            <div class="block__info">
-                <p>Индексатор</p>
-                <select @bind="currentIndexator">
-                    @foreach (var indexatorType in Enum.GetValues(typeof(Indexator)))
-                    {
-                        <option value="@indexatorType">@indexatorType</option>
-                    }
-                </select>
-            </div>
-
-            <div class="block__info">
-                <p>URL записи об индексе</p>
-                <input type="url" @bind="currentURL" />
-            </div>
-            <div class="block__info">
-                <p>Добавленные записи об индексе</p>
-
-                <ul>
-                    @foreach (CitationIndexDto index in indices)
-                    {
-                        <li>
-                            @Enum.GetName(index.Indexator) @index.URL
-                            <button @onclick="() => RemoveIndex(index)">
-                                Удалить запись об индексе
-                            </button>
-                        </li>
-                    }
-                </ul>
-            </div>
-            <button class="button" @onclick="AddIndex">Изменить индекс</button>
-        </div>
-    </div>
-    <div id="content-4">
-        <div class="ConferencInfo Info">
-            <h3>Представление на конференции</h3>
-            <div class="block__info">
-                <p>Краткое название</p>
-                <input @bind="currentShortName" />
-            </div>
-            <div class="block__info">
-                <p>Полное название</p>
-                <input @bind="currentFullName" />
-            </div>
-            <div class="block__info">
-                <p>Дата начала</p>
-                <input type="date" @bind="currentStartDate" />
-            </div>
-            <div class="block__info">
-                <p>Дата окончания</p>
-                <input type="date" @bind="currentEndDate" />
-            </div>
-            <div class="block__info">
-                <p>Тип конференции</p>
-                <select @bind="currentType">
-                    @foreach (var conferenceType in
-                    Enum.GetValues(typeof(ConferenceType)))
-                    {
-                        <option value="@conferenceType">@conferenceType</option>
-                    }
-                </select>
-            </div>
-            <div class="block__info">
-                <p>Место проведения</p>
-            </div>
-            <input @bind="currentLocation" />
-            <br />
-            <button class="button" @onclick="AddConference">Изменить конференцию</button>
-
-            @if (conference != null)
-            {
-                <p>@conference.ShortName</p>
-                <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
-            }
-        </div>
-    </div>
-</div>
-
-
-<div class="MianContainer">
-</div>
-
-<div>
-    <button class="AddSource__Record"
-            @onclick="async () => await AddPublication()">
-        Изменить
-    </button>
-</div>
+<PublicationEditor @bind-BindingValue="_publication">
+    <button class="add-publication-button" @onclick="async () => await AddPublication()">Сохранить изменения</button>
+</PublicationEditor>
 
 @code
 {
-    public List<AuthorDto> authors = new();
-    public List<CitationIndexDto> indices = new();
-    public ConferenceDto conference = null!;
+    private const string PageAfterAddition = "";
 
-    public string title { get; set; } = string.Empty;
-    public int publishingYear { get; set; } = 2022;
-    public PublicationType publicationType { get; set; }
+    private PublicationDto _publication = new();
 
-    public string currentFirstName { get; set; } = string.Empty;
-    public string currentLastName { get; set; } = string.Empty;
-    public string? currentPatronimicName { get; set; }
-    public string currentEmail { get; set; } = string.Empty;
-
-    public Indexator currentIndexator { get; set; }
-    public string currentURL { get; set; } = string.Empty;
-
-    public string currentShortName { get; set; } = string.Empty;
-    public string currentFullName { get; set; } = string.Empty;
-    public DateTime currentStartDate { get; set; } = DateTime.Now;
-    public DateTime currentEndDate { get; set; } = DateTime.Now;
-    public ConferenceType currentType { get; set; }
-    public string currentLocation { get; set; } = string.Empty;
-
-    public void AddAuthor()
+    private async Task AddPublication()
     {
-        AuthorDto author = new()
-            {
-                FirstName = currentFirstName,
-                LastName = currentLastName,
-                PatronimicName = currentPatronimicName,
-                Email = currentEmail
-            };
-
-        authors.Add(author);
-
-        currentFirstName = string.Empty;
-        currentLastName = string.Empty;
-        currentPatronimicName = string.Empty;
-        currentEmail = string.Empty;
-    }
-
-    public void RemoveAuthor(AuthorDto author)
-    {
-        if (authors.Contains(author))
-        {
-            authors.Remove(author);
-        }
-        else
-        {
-            throw new NullReferenceException();
-        }
-    }
-
-    public void AddIndex()
-    {
-        CitationIndexDto index = new()
-            {
-                Indexator = currentIndexator,
-                URL = new Uri(currentURL)
-            };
-
-        indices.Add(index);
-
-        currentURL = null!;
-    }
-
-    public void RemoveIndex(CitationIndexDto index)
-    {
-        if (indices.Contains(index))
-        {
-            indices.Remove(index);
-        }
-        else
-        {
-            throw new NullReferenceException();
-        }
-    }
-
-    public void AddConference()
-    {
-        conference = new()
-            {
-                ShortName = currentShortName,
-                FullName = currentFullName,
-                StartDate = currentStartDate,
-                EndDate = currentEndDate,
-                Type = currentType,
-                Location = currentLocation
-            };
-    }
-
-    public void RemoveConference()
-    {
-        conference = null!;
-        currentShortName = string.Empty;
-        currentFullName = string.Empty;
-        currentStartDate = DateTime.Now;
-        currentEndDate = DateTime.Now;
-        currentLocation = string.Empty;
-    }
-
-    public async Task AddPublication()
-    {
-        PublicationDto publicationDto = new()
-            {
-                Id = editingPublicationGuid,
-                Title = title,
-                PublishingYear = publishingYear,
-                PublicationType = publicationType
-            };
-
-        foreach (AuthorDto author in authors)
-        {
-            author.PublicationId = publicationDto.Id;
-            publicationDto.Authors.Add(author);
-        }
-
-        foreach (CitationIndexDto index in indices)
-        {
-            index.PublicationId = publicationDto.Id;
-            publicationDto.CitationIndices.Add(index);
-        }
-
-        if (conference != null)
-        {
-            conference.PublicationId = publicationDto.Id;
-            publicationDto.Conference = conference;
-        }
-
-        await SendPutRequest(publicationDto);
-        _nav.NavigateTo("");
+        await SendPutRequest(_publication);
+        Nav.NavigateTo(PageAfterAddition);
     }
 
     [Parameter]
     public string? currentPublicationIdString { get; set; }
 
-    public Guid editingPublicationGuid { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
-        Guid publicationGuid = Guid.Empty;
-
-        if (currentPublicationIdString != null && currentPublicationIdString.Length != 0)
+        if (!string.IsNullOrEmpty(currentPublicationIdString))
         {
-            bool parsingResult = Guid.TryParse(currentPublicationIdString, out publicationGuid);
-
-            if (parsingResult)
+            if (Guid.TryParse(currentPublicationIdString, out _))
             {
-                editingPublicationGuid = publicationGuid;
-                PublicationDto? publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{currentPublicationIdString}") ?? null!;
-                FillInputFields(publication);
+                _publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{currentPublicationIdString}") ?? null!;
             }
             else
             {
@@ -393,16 +44,5 @@
         }
     }
 
-    public void FillInputFields(PublicationDto publicationDto)
-    {
-        title = publicationDto.Title;
-        publishingYear = publicationDto.PublishingYear;
-        publicationType = publicationDto.PublicationType;
-
-        authors = publicationDto.Authors;
-        indices = publicationDto.CitationIndices;
-        conference = publicationDto.Conference ?? null!;
-    }
-
-    public async Task SendPutRequest(PublicationDto publicationDto) => await Http.PutAsJsonAsync<PublicationDto>($"https://localhost:7204/api/Edit/{publicationDto.Id.ToString()}", publicationDto);
+    private async Task SendPutRequest(PublicationDto publicationDto) => await Http.PutAsJsonAsync("https://localhost:7204/api/Edit/", publicationDto);
 }

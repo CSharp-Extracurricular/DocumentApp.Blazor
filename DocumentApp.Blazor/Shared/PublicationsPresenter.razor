@@ -1,73 +1,129 @@
 ﻿@using System.Net.Http
 @inject HttpClient Http
 @using System.Net.Http.Json
+@using System.Text
 @using System.Threading.Tasks
 @using DocumentApp.DTO
 @using DocumentApp.Domain
-@inject NavigationManager _nav
+@inject NavigationManager Nav
 
-<div class="filter">
-    <div class="title__filter">Фильтр:</div>
-    Начальный год:
-    <input type="text" @bind="@startYear" />
-    Конечный год: 
-    <input type="text" @bind="@endYear" />
-    Тип публикации: 
-    <select @bind="publicationType">
-        <option>All</option>
-        @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
-        {
-                    <option value="@_publicationType">@_publicationType</option>
-        }
+<input type="checkbox" name="filter-toggle" id="filter-toggle" value="">
+<label class="title__filter" for="filter-toggle"> Фильтр </label>
+
+<div id="filter-container" class="block__info">
+    <div class="filter-field">
+        <p>Начальный год</p>
+        <input type="text" @bind="startYear"/></div>
+    <div class="filter-field">
+        <p>Конечный год</p>
+        <input type="text" @bind="endYear"/></div>
+    <div class="filter-field">
+        <p>Тип публикации</p>
+        <select class="block__info__selector" @bind="publicationType">
+            <option value="" @onclick="() => publicationType = null">All</option>
+            @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
+            {
+                <option value="@_publicationType">@_publicationType</option>
+            }
         </select>
-    <input type="button" button class="AddSource__Search" value="Поиск" @onclick="@SearchIssues" />
+    </div>
+    <div class="filter-field">
+        <button class="filter-button" @onclick="@SearchIssues">
+            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+        </button>
+        <button class="filter-button" @onclick="@ClearSearch">
+            <span class="oi oi-x" aria-hidden="true"></span>
+        </button>
+    </div>
 </div>
 
-@if (fulfil && _publications.Count() == 0)
+<hr/>
+
+@if (fulfil && !_publications.Any())
 {
     <p>Публикации отсутствуют.</p>
 }
-else if (!fulfil && _publications == null)
+else if (!fulfil)
 {
     <p>Идет загрузка...</p>
 }
 
-@if (_publications != null)
+@if (_publications.Any())
 {
-    <ol>
-        @foreach (var publication in _publications)
-        {
-            <li>
-                <div class="list__source__block">
-                    <div>
-                        @foreach (Author author in publication.Authors)
-                        {
-                            <span>
-                                @(author.LastName) @(author.FirstName) @(author.PatronimicName)
-                                @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
+    <div class="main-wrap">
+        <div class="publication-cards-main-column">
+            <ul class="publication-cards-container">
+                @foreach (var publication in _publications)
+                {
+                    <li>
+                        <div class="publication-card">
+                            <div class="publication-card-title">
+                                @publication.Title
+                            </div>
+                            <div>
+                                @foreach (Author author in publication.Authors)
                                 {
-                                    <span>, </span>
+                                    <span>
+                                        @(author.LastName) @(author.FirstName) @(author.PatronimicName)
+                                        @if (publication.Authors.IndexOf(author) != publication.Authors.Count - 1)
+                                        {
+                                            <span>, </span>
+                                        }
+                                    </span>
                                 }
-                            </span>
-                        }
-                    </div>
-                    <div>
-                        <b>@publication.Title</b>
-                    </div>
-                    <div>
-                        @publication.PublishingYear
-                    </div>
-                </div>
-                <button @onclick="async () => await DeletePublication(publication)">Удалить</button>
-                <button @onclick="@(()=>_nav.NavigateTo($"/edit/{publication.Id}"))">Изменить</button>
-            </li>
+                            </div>
+                            <div>
+                                @publication.PublishingYear
+                            </div>
+                            <div class="publication-card-actions">
+                                <button @onclick="async () => await DeletePublication(publication)">
+                                    <span class="oi oi-trash" aria-hidden="true"></span>
+                                </button>
+                                <button @onclick="@(() => Nav.NavigateTo($"/edit/{publication.Id}"))">
+                                    <span class="oi oi-pencil" aria-hidden="true"></span>
+                                </button>
+                                <button @onclick="() => ShowPublication(publication)">
+                                    <span class="oi oi-eye" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <button class="add-publication-button" @onclick="@(()=>Nav.NavigateTo("/add"))">Добавить публикацию</button>
+        </div>
+        @if (isPreviewShown)
+        {
+            <div class="publication-cards-preview-wrap">
+                <PublicationPreview PublicationId="previewGuid" />
+                <button class="publication-close-preview-button" @onclick="ClosePreview">
+                    <span class="oi oi-x" aria-hidden="true"></span>
+                </button>
+            </div>
         }
-    </ol>
+    </div>
 }
 
-@code {
-    private List<Publication> _publications = new List<Publication>();
+@code
+{
+    private const int QueryStringMaxLength = 88;
+
+    private List<Publication> _publications = new();
     private bool fulfil = false;
+
+    private bool isPreviewShown = false;
+    private Guid previewGuid;
+
+    private void ShowPublication(Publication publication)
+    {
+        previewGuid = publication.Id;
+        isPreviewShown = true;
+    }
+
+    private void ClosePreview()
+    {
+        isPreviewShown = false;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,7 +135,6 @@ else if (!fulfil && _publications == null)
         }
 
         fulfil = true;
-        return;
     }
 
     public async Task DeletePublication(Publication publication)
@@ -91,12 +146,11 @@ else if (!fulfil && _publications == null)
     private int? startYear = null;
     private int? endYear = null;
     private PublicationType? publicationType = null;
-    string query = string.Empty;
 
     public async Task SearchIssues()
     {
         _publications.Clear();
-        query = GetQueryString(startYear, endYear, publicationType);
+        string query = GetQueryString(startYear, endYear, publicationType);
         IEnumerable<PublicationDto> result = await Http.GetFromJsonAsync<IEnumerable<PublicationDto>>(query) ?? null!;
 
         foreach (PublicationDto publicationDto in result)
@@ -105,36 +159,12 @@ else if (!fulfil && _publications == null)
         }
     }
 
-    public string GetQueryString(int? start, int? end, PublicationType? type)
+    public async Task ClearSearch()
     {
-        // https://localhost:7204/api/View/filter?StartYear=2003&EndYear=2022&PublicationType=0
-        string query = "https://localhost:7204/api/View/filter?";
-
-        if (start != null)
-        {
-            query += $"StartYear={start}";
-        }
-
-        if (end != null)
-        {
-            if (start != null)
-            {
-                query += "&";
-            }
-
-            query += $"EndYear={end}";
-        }
-
-        if (type != null)
-        {
-            if (start != null || end != null)
-            {
-                query += "&";
-            }
-
-            query += $"&PublicationType={(int?) publicationType}";
-        }
-
-        return query;
+        _publications.Clear();
+        await OnInitializedAsync();
     }
+
+    public string GetQueryString(int? start, int? end, PublicationType? type) 
+        => $"https://localhost:7204/api/View/filter?StartYear={start}&EndYear={end}&PublicationType={(int?)publicationType}";
 }

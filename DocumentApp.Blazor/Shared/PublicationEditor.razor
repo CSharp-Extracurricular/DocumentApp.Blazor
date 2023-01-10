@@ -1,0 +1,197 @@
+﻿<div class="main-container">
+    <div class="tabs">
+        <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
+        <label for="tab-btn-1">Основная информация</label>
+        <input type="radio" name="tab-btn" id="tab-btn-2" value="">
+        <label for="tab-btn-2">Авторы</label>
+        <input type="radio" name="tab-btn" id="tab-btn-3" value="">
+        <label for="tab-btn-3">Индексация</label>
+        <input type="radio" name="tab-btn" id="tab-btn-4" value="">
+        <label for="tab-btn-4">Конференция</label>
+
+        <div id="content-1">
+            <div class="Info">
+                <h3 class="addition-page-tab-header">Основная информация</h3>
+
+                <InputField @bind-BindingValue="BindingValue.Title">Название</InputField>
+
+                <div class="block__info">
+                    <p>Год публикации</p>
+                    <input maxlength="4" type="number" @bind="BindingValue.PublishingYear" />
+                </div>
+                
+                <InputFieldSelector @bind-BindingValue="BindingValue.PublicationType">
+                    Тип публикации
+                </InputFieldSelector>
+            </div>
+        </div>
+        <div id="content-2">
+            <div class="Info">
+                <h3>Авторы</h3>
+
+                <InputField @bind-BindingValue="_author.LastName">Фамилия</InputField>
+                <InputField @bind-BindingValue="_author.FirstName">Имя</InputField>
+                <InputField @bind-BindingValue="_author.PatronimicName">Отчество</InputField>
+                <InputField @bind-BindingValue="_author.Email">E-mail</InputField>
+
+                <div class="block__info">
+                    <p>Добавленные авторы</p>
+                    <ol>
+                        @foreach (AuthorDto author in BindingValue.Authors)
+                        {
+                            <br/>
+                            <li>
+                                @author.LastName @author.FirstName @author.PatronimicName
+                                <button class="ButtonDeleteAutor" @onclick="() => RemoveAuthor(author)">
+                                    Удалить
+                                </button>
+                            </li>
+                        }
+                    </ol>
+                </div>
+                <button class="button" @onclick="AddAuthor">Добавить автора</button>
+            </div>
+        </div>
+        <div id="content-3">
+            <div class="Info">
+                <h3>Индексация</h3>
+                
+                <InputFieldSelector @bind-BindingValue="_index.Indexator">
+                    Индексатор
+                </InputFieldSelector>
+
+                <div class="block__info">
+                    <p>URL записи об индексе</p>
+                    <input type="url" value="@_index.URL"
+                           @onchange="@(e => _index.URL = new Uri(e.Value?.ToString()!))" />
+                </div>
+                <div class="block__info">
+                    <p>Добавленные записи об индексации</p>
+                    <ul>
+                        @foreach (CitationIndexDto index in BindingValue.CitationIndices)
+                        {
+                            <li>
+                                @Enum.GetName(index.Indexator) @index.URL
+                                <button @onclick="() => RemoveIndex(index)">
+                                    Удалить запись об индексе
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <button class="button" @onclick="AddIndex">Добавить индекс</button>
+            </div>
+        </div>
+        <div id="content-4">
+            <div class="Info">
+                <h3>Представление на конференции</h3>
+
+                <InputField @bind-BindingValue="_conference.ShortName">Краткое название</InputField>
+                <InputField @bind-BindingValue="_conference.FullName">Полное название</InputField>
+
+                <div class="block__info">
+                    <p>Дата начала</p>
+                    <input type="date" @bind="_conference.StartDate" />
+                </div>
+                <div class="block__info">
+                    <p>Дата окончания</p>
+                    <input type="date" @bind="_conference.EndDate" />
+                </div>
+                <InputFieldSelector @bind-BindingValue="_conference.Type">
+                    Индексатор
+                </InputFieldSelector>
+
+                <InputField @bind-BindingValue="_conference.Location">Место проведения</InputField>
+                
+                <button class="button" @onclick="AddConference">Добавить конференцию</button>
+
+                @if (BindingValue.Conference != null)
+                {
+                    <p>@BindingValue.Conference.ShortName</p>
+                    <button class="button" @onclick="RemoveConference">Удалить конференцию</button>
+                }
+            </div>
+        </div>
+    </div>
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private PublicationDto _publication;
+
+    [Parameter]
+    public PublicationDto BindingValue
+    {
+        get => _publication;
+        set
+        {
+            if (_publication == value) return;
+            _publication = value;
+            BindingValueChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<PublicationDto> BindingValueChanged { get; set; }
+
+    private AuthorDto _author = new();
+
+    private CitationIndexDto _index = new();
+
+    private ConferenceDto _conference = new()
+        {
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now
+        };
+
+    private void AddAuthor()
+    {
+        _author.Number = _publication.Authors.Count;
+        _author.PublicationId = _publication.Id;
+        _publication.Authors.Add(_author);
+        _author = new AuthorDto();
+    }
+
+    private void RemoveAuthor(AuthorDto author) => RemoveElementFromList(author, _publication.Authors);
+
+    private void AddIndex()
+    {
+        _index.PublicationId = _publication.Id;
+        _publication.CitationIndices.Add(_index);
+        _index = new CitationIndexDto();
+    }
+
+    private void RemoveIndex(CitationIndexDto index) => RemoveElementFromList(index, _publication.CitationIndices);
+
+    private void AddConference()
+    {
+        _conference.PublicationId = _publication.Id;
+        _publication.Conference = _conference;
+    }
+
+    private void RemoveConference()
+    {
+        _publication.Conference = null;
+        _conference = new ConferenceDto
+            {
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now
+
+            };
+    }
+
+    private static void RemoveElementFromList<T>(T element, ICollection<T> collection) where T : class
+    {
+        if (collection.Contains(element))
+        {
+            collection.Remove(element);
+        }
+        else
+        {
+            throw new NullReferenceException();
+        }
+    }
+}

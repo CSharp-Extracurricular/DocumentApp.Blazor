@@ -1,0 +1,73 @@
+﻿@import url('Colors.css');
+
+.filter-button {
+    color: #C4C4C4;
+    width: 5rem;
+    background-color: var(--interactive-element-background);
+    font-family: Roboto;
+    font-size: 15px;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 5px;
+    transition: all 0.1s ease-in;
+    display: inline-block;
+}
+
+.filter-button:hover {
+        color: black;
+        background-color: #c2c2c2;
+        transition: all 0.1s ease-in;
+    }
+
+.filter-button span {
+    font-family: Icons !important;
+}
+
+.title__filter {
+    font-size: 110%;
+    margin-right: 20px;
+}
+
+#filter-container {
+    margin: 0 20px;
+    margin-bottom: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.2s ease-in, opacity 0.2s ease-in, max-height 0.2s ease-in;
+    display: block;
+    max-height: 0px;
+    width: 40%;
+}
+
+.filter-field {
+    margin-top: 10px;
+}
+
+#filter-toggle {
+    user-select: none;
+    opacity: 0;
+}
+
+.title__filter {
+    cursor: pointer;
+}
+
+    #filter-toggle + label::before {
+        cursor: pointer;
+        font-family: Icons !important;
+        content: '\e02d';
+    }
+
+    #filter-toggle:checked + label::before {
+        cursor: pointer;
+        font-family: Icons !important;
+        content: '\e030';
+    }
+
+#filter-toggle:checked ~ #filter-container {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.2s ease-in, max-height 0.2s ease-in, opacity 0.2s ease-in;
+    max-height: 500px;
+}
