@@ -13,6 +13,7 @@
 @code
 {
     private const string PageAfterAddition = "";
+    private const string PutEndpointUrl = "https://localhost:7204/api/Edit/";
 
     private PublicationDto _publication = new();
 
@@ -27,22 +28,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!string.IsNullOrEmpty(CurrentPublicationIdString))
+        if (!Guid.TryParse(CurrentPublicationIdString, out _))
         {
-            if (Guid.TryParse(CurrentPublicationIdString, out _))
-            {
-                _publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{CurrentPublicationIdString}") ?? null!;
-            }
-            else
-            {
-                throw new Exception("Guid parsing error");
-            }
+            throw new Exception("Guid parsing error");
         }
-        else
-        {
-            throw new Exception("Publication Guid not found");
-        }
+
+        PublicationDto? result = await Http.GetFromJsonAsync<PublicationDto?>($"https://localhost:7204/api/View/{CurrentPublicationIdString}");
+
+        _publication = result ?? throw new Exception("Publication not found");
     }
 
-    private async Task SendPutRequest(PublicationDto publicationDto) => await Http.PutAsJsonAsync("https://localhost:7204/api/Edit/", publicationDto);
+    private async Task SendPutRequest(PublicationDto publicationDto) 
+        => await Http.PutAsJsonAsync(PutEndpointUrl, publicationDto);
 }
