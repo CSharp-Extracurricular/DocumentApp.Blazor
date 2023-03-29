@@ -1,4 +1,4 @@
-﻿@page "/edit/{currentPublicationIdString}"
+﻿@page "/edit/{CurrentPublicationIdString}"
 
 @inject HttpClient Http
 @inject NavigationManager Nav
@@ -23,15 +23,15 @@
     }
 
     [Parameter]
-    public string? currentPublicationIdString { get; set; }
+    public string? CurrentPublicationIdString { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        if (!string.IsNullOrEmpty(currentPublicationIdString))
+        if (!string.IsNullOrEmpty(CurrentPublicationIdString))
         {
-            if (Guid.TryParse(currentPublicationIdString, out _))
+            if (Guid.TryParse(CurrentPublicationIdString, out _))
             {
-                _publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{currentPublicationIdString}") ?? null!;
+                _publication = await Http.GetFromJsonAsync<PublicationDto>($"https://localhost:7204/api/View/{CurrentPublicationIdString}") ?? null!;
             }
             else
             {
