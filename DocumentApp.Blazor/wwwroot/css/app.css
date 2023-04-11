@@ -29,7 +29,9 @@
     display: flex;
 }
 
+
 .publication-close-preview-button {
+    font-family: Roboto, Geneva, Tahoma, sans-serif;
     color: #C4C4C4;
     width: 7rem;
     background-color: #f5f5f5;
@@ -43,6 +45,7 @@
 }
 
     .publication-close-preview-button:hover {
+        font-family: Roboto, Geneva, Tahoma, sans-serif;
         color: black;
         background-color: #c2c2c2;
         transition: all 0.1s ease-in;
@@ -84,6 +87,7 @@ li {
 }
 
 .add-publication-button {
+    font-family: Roboto, Geneva, Tahoma, sans-serif;
     font-family: Roboto;
     font-weight: bold;
     text-align: center;
@@ -94,7 +98,7 @@ li {
     font-size: 16px;
     border-radius: 10px;
     cursor: pointer;
-    width: 90%;
+    width: 40%;
     margin: 10px;
     transition: all 0.1s ease-in;
 }
@@ -121,8 +125,28 @@ a {
 
 .main-container button {
     display: block;
-    width: 40%;
 }
+
+.button {
+    font-family: Roboto, Geneva, Tahoma, sans-serif;
+    background-color: #4F6C77;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 55%;
+}
+
+    .button:hover {
+        transform: scale(1.02);
+        transition: all 0.1s ease-in;
+    }
+
 
 .Info {
     width: 50%;
@@ -173,14 +197,6 @@ a {
     color: white;
     border: none;
     padding: 7px 14px;
-}
-
-.button {
-    background: #062666;
-    color: white;
-    border: none;
-    padding: 7px 20px;
-    margin-top: 15px;
 }
 
 .TitleMini {
@@ -243,4 +259,8 @@ ul, li {
 .tabs > input[type="radio"]:checked + label {
     background-color: #fff;
     border-bottom: 1px solid #fff;
+}
+
+* {
+    font-family: Roboto, Geneva, Tahoma, sans-serif;
 }
