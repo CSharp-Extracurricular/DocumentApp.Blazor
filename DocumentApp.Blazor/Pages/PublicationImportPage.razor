@@ -1,0 +1,66 @@
+﻿@page "/import"
+@using System.Web
+@using System.Net.Http.Headers
+@using System.Net
+
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<PageTitle>Импорт публикации</PageTitle>
+<PageHeader>Импорт публикации</PageHeader>
+
+<InputField @bind-BindingValue="Link">Введите ссылку для импорта публикации в поле ниже:</InputField>
+<button class="add-publication-button" @onclick="async() => await ImportPublication()">Импортировать</button>
+
+@if (_error)
+{
+    <h2>Ошибка импорта: </h2>
+    <p>@_errorMessage</p>
+}
+
+@code
+{
+    private string _link;
+    private bool _error = false;
+    private string _errorMessage;
+    [Parameter]
+    public string Link
+    {
+        get => _link;
+        set
+        {
+            if (_link == value) return;
+            _link = value;
+            BindingValueChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> BindingValueChanged { get; set; }
+
+    private async Task ImportPublication()
+    {
+        string link = $"https://localhost:7204/api/Import/{HttpUtility.UrlEncode(Link)}";
+        try
+        {
+            _error = false;
+            _errorMessage = string.Empty;
+
+            HttpResponseMessage result = await Http.GetAsync(link);
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("Error: server responded with 404 not found code.\n" +
+                                    "Common reasons: invalid URL or server unavailable");
+            }
+
+            Nav.NavigateTo("");
+        }
+        catch (Exception exception)
+        {
+            _error = true;
+            _errorMessage = exception.Message;
+        }
+        
+    }
+}
