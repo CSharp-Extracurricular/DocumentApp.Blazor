@@ -13,6 +13,10 @@
             {
                 <option class="block__info__selector" value="@publicationType">@Localization.Translate((PublicationStatus)publicationType)</option>
             }
+            else if (typeof(TType) == typeof(ConferenceType))
+            {
+                <option class="block__info__selector" value="@publicationType">@Localization.Translate((ConferenceType)publicationType)</option>
+            }
             else
             {
                 <option class="block__info__selector" value="@publicationType">@publicationType</option>

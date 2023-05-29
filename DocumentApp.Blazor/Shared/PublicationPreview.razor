@@ -31,7 +31,7 @@
         <p>Полное название: @_publication.Conference.FullName</p>
         <p>Место проведения: @_publication.Conference.Location</p>
         <p>Даты проведения: @_publication.Conference.StartDate.ToString("d")—@_publication.Conference.EndDate.ToString("d")</p>
-        <p>Тип: @_publication.Conference.Type</p>
+        <p>Тип: @Localization.Translate(_publication.Conference.Type)</p>
     }
 </div>
 

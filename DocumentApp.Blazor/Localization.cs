@@ -29,5 +29,17 @@ namespace DocumentApp.Blazor
                 default: return "Неизвестно";
             }
         }
+
+        public static string Translate(ConferenceType type)
+        {
+            switch (type)
+            {
+                case ConferenceType.Local: return "Местная";
+                case ConferenceType.Regional: return "Региональная";
+                case ConferenceType.National: return "Национальная";
+                case ConferenceType.International: return "Международная";
+                default: return "Неизвестно";
+            }
+        }
     }
 }
