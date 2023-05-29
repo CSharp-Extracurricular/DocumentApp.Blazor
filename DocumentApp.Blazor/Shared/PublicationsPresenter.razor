@@ -20,10 +20,10 @@
     <div class="filter-field">
         <p>Тип публикации</p>
         <select class="block__info__selector" @bind="publicationType">
-            <option value="" @onclick="() => publicationType = null">All</option>
+            <option value="" @onclick="() => publicationType = null">Любой</option>
             @foreach (var _publicationType in Enum.GetValues(typeof(PublicationType)))
             {
-                <option value="@_publicationType">@_publicationType</option>
+                <option value="@_publicationType">@Localization.Translate((PublicationType)_publicationType)</option>
             }
         </select>
     </div>

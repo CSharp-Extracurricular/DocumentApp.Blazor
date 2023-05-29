@@ -5,7 +5,18 @@
     <select class="block__info__selector" @bind="BindingValue">
         @foreach (var publicationType in Enum.GetValues(typeof(TType)))
         {
-            <option class="block__info__selector" value="@publicationType">@publicationType</option>
+            @if (typeof(TType) == typeof(PublicationType))
+            {
+                <option class="block__info__selector" value="@publicationType">@Localization.Translate((PublicationType)publicationType)</option>
+            }
+            else if (typeof(TType) == typeof(PublicationStatus))
+            {
+                <option class="block__info__selector" value="@publicationType">@Localization.Translate((PublicationStatus)publicationType)</option>
+            }
+            else
+            {
+                <option class="block__info__selector" value="@publicationType">@publicationType</option>
+            }
         }
     </select>
 </div>
